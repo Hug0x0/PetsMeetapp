@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "180020434259",
+    "firebase_url": "https://pet-s-meet.firebaseio.com",
+    "project_id": "pet-s-meet",
+    "storage_bucket": "pet-s-meet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180020434259:android:a505b1277235f0b615fda6",
+        "android_client_info": {
+          "package_name": "com.example.pets_meet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180020434259-l2ln6mb7j95jrjsd9em9hcic38nssahj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUoEH0UasSe_qAaxAisvlYP4bbSJxddv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180020434259-l2ln6mb7j95jrjsd9em9hcic38nssahj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "180020434259-sd6m63f96kn6e5sj7kc2jhkrlj3v6sd7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.petsMeet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
