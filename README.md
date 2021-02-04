@@ -1,16 +1,59 @@
-# pets_meet
+# Pet's Meet 
 
-A new Flutter project.
+*"Pet's Meet dating for THEM too !"*
 
-## Getting Started
+New pet owner relationship application.
+
+🐶 🐱
+
+## 🐾 Getting Started
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+### Step 1:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+To download flutter to run this project [click here](https://flutter.dev/docs/get-started/install)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Step 2:
+
+Download or clone this repo by using the link below:
+
+```https://github.com/Hugooboutot/PetsMeetapp.git```
+
+### Step 3:
+
+Go to project root and execute the following command in console to get required dependencies:
+
+```flutter pub get```
+
+### Step 4:
+
+Run the project
+
+```flutter run```
+
+## 🔨 Installation of docker
+
+First instal docker to use our services that use docker.
+
+[Click here to install docker desktop](https://docs.docker.com/desktop/)
+
+## 🔐 Docker https certificat installation
+
+After the installation of docker you can now build the container for our service.
+
+Unless they are already running, this command also starts any linked services.
+
+```docker-compose up```
+
+After doing this, the server is now ready you can now go on your [https://localhost](https://localhost) and the certificat Pet's Meet (PM) is working.
+
+You can also go to [http://localhost:8080](http://localhost:8080) to consult nginx server.
+
+If you want to stops containers created by up you can use :
+
+```docker-compose down```
+
+## ❗ Show your support
+
+Give a ⭐ to support us :)
