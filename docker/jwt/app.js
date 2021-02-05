@@ -1,9 +1,12 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
 const ofirebase = require("./firebase/data");
 
 const app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.listen(8081, () => console.log("Server ready"))
 
