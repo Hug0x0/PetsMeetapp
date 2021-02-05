@@ -1,9 +1,19 @@
-const express = require('express')
-const jwt = require('jsonwebtoken')
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const ofirebase = require("./firebase/data");
 
-const app = express()
+const app = express();
+
+
+app.listen(8081, () => console.log("Server ready"))
 
 app.get("/", (req, res) => res.send("Serve nodejs"))
+
+app.post("/stroll/", function(req, res){
+    ofirebase.saveData(req.body, function(err, data){
+        res.send(data);
+    });
+});
 
 app.post("/posts", verifyToken, (req, res) => {
     jwt.verify(req.token, "secretkey", (err, authData) => {
@@ -41,6 +51,3 @@ function verifyToken(req, res, next) {
         res.sendStatus(403);
     }
 }
-
-app.listen(8081, () => console.log("Server ready"))
-

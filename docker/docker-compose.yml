@@ -1,12 +1,20 @@
-web:
-  build: './web'
-  ports:
-   - "8080:80"
-   - "443:443"
-  environment:
-   - NGINX_HOST=foobar.com
-   - NGINX_PORT=80
-  volumes:
-   - ./certs:/etc/nginx/certs
-jwt:
-  build: './jwt'
+version: '2'
+services:
+  web:
+    build: './web'
+    ports:
+    - "8080:80"
+    - "443:443"
+    environment:
+    - NGINX_HOST=foobar.com
+    - NGINX_PORT=80
+    volumes:
+    - ./certs:/etc/nginx/certs
+    depends_on:
+    - "jwt"
+  jwt:
+    build: './jwt'
+    volumes:
+      - ./jwt:/usr/src/app
+    ports:
+    - "8081:8081" 
