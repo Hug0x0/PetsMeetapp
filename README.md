@@ -50,12 +50,6 @@ You have the directory **certs** who contains our key and certificat.
 
 The directory **docker/web** is the part of docker to have an https in our localhost.
 
-Before use docker services, you can go to **/docker/jwt** directory (will see later) and use :
-
-```
-npm install
-```
-
 Now, you can build the container docker for our service.
 
 Unless they are already running, this command also starts any linked services.
