@@ -18,19 +18,25 @@ To download flutter to run this project [click here](https://flutter.dev/docs/ge
 
 Download or clone this repo by using the link below:
 
-```https://github.com/Hugooboutot/PetsMeetapp.git```
+```
+https://github.com/Hugooboutot/PetsMeetapp.git
+```
 
 ### Step 3:
 
 Go to project root and execute the following command in console to get required dependencies:
 
-```flutter pub get```
+```
+flutter pub get
+```
 
 ### Step 4:
 
 Run the project
 
-```flutter run```
+```
+flutter run
+```
 
 ## 🔨 Installation of docker
 
@@ -40,49 +46,72 @@ First instal docker to use our services that use docker.
 
 ## 🔐 Docker https certificat installation
 
-After the installation of docker you can now build the container for our service.
+You have the directory **certs** who contains our key and certificat.
+
+The directory **docker/web** is the part of docker to have an https in our localhost.
+
+Before use docker services, you can go to **/docker/jwt** directory (will see later) and use :
+
+```
+npm install
+```
+
+Now, you can build the container docker for our service.
 
 Unless they are already running, this command also starts any linked services.
 
-Go to docker directory :
+Go to **/docker** directory :
 
-```docker-compose up -d web```
+```
+docker-compose up
+```
 
 After doing this, the server is now ready you can now go on your [https://localhost](https://localhost) and the certificat Pet's Meet (PM) is working.
 
-You can also go to [http://localhost:8080](http://localhost:8080) to consult nginx server.
-
-If you want to stops containers created by up you can use :
-
-```docker-compose down```
-
 ## 🔰 Docker authentification with jsonwebtoken
 
-You can go to docker directory to build image of jsonwebtoken :
+For this part, you can consult **docker/jwt**. We also have firebase connect to our serveur nodejs to add some stroll.
 
-```docker-compose up -d jwt```
+If you want to check, you can go to your [https://localhost](https://localhost) to see your server nodejs running !
 
-By default, our image is called docker_jwt. Now you can run it on a container with :
-
-```docker run --name docker_jwt -p 8081:8081 -d docker_jwt```
-
-After doing this, you can now go to your [http://localhost:8081](http://localhost:8081) to see your server nodejs running !
+### 💻 Postman
 
 To verify if the token is working you can install postman [here](https://www.postman.com/downloads/).
 
 You can request your localhost on POST to have an token with :
 
-```localhost:8081/login```
+```
+https://localhost/login
+```
 
 Here we go their is your token generated !
 
 To get the authorization to have our data, you can request on POST:
 
-```localhost:8081/posts```
+```
+https://localhost/posts
+```
 
 Don't forget to add an header with key : **Authorization** and value : **Bearer yourTokenGenerated**.
 
-You have now access to your data of token !
+You have now access to your data of token ! 
+
+You can use the call **/stroll/** on POST to create a stroll on our realtime database (Flutter).
+
+```
+https://localhost/stroll/
+```
+
+On postman you have to setup a request json. Go to **Body**, select **raw**, and on **Text** you can choose **Json** and enter this request :
+
+```
+{
+    "name": "NameOfStroll",
+    "participants": "numberOfParticipants"
+}
+```
+
+If you got inserted successful, you can consult your stroll created by yourself ! Visit [Pet's meet database](https://pet-s-meet.firebaseio.com/strolls.json)
 
 ## ❗ Show your support
 
