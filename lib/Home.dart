@@ -10,6 +10,7 @@
 // bar items. The first one is selected.](https://flutter.github.io/assets-for-api-docs/assets/material/bottom_navigation_bar.png)
 
 import 'package:flutter/material.dart';
+import 'package:pets_meet/widgets/newsFeeds.dart';
 
 void main() => runApp(MyApp());
 
@@ -58,6 +59,36 @@ class _HomeState extends State<Home> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void indexRedirection(context) {
+    var route = ModalRoute.of(context).settings.name;
+    switch (_selectedIndex) {
+      /* case 0:
+        {
+          Navigator.pushReplacement(context,
+              new PageRouteBuilder(pageBuilder: (_, __, ___) {
+            //  return new autrePage();
+          }));
+          break;
+        }*/
+      case 1:
+        {
+          Navigator.pushReplacement(context,
+              new PageRouteBuilder(pageBuilder: (_, __, ___) {
+            return new News();
+          }));
+          break;
+        }
+      /* case 2:
+        {
+          Navigator.pushReplacement(context,
+              new PageRouteBuilder(pageBuilder: (_, __, ___) {
+            // return new autrePage();
+          }));
+          break;
+        }*/
+    }
   }
 
   @override
