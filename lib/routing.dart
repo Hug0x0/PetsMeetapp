@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pets_meet/routes.dart';
+import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/connection.dart';
-import 'package:pets_meet/screens/home.dart';
 import 'package:pets_meet/screens/register.dart';
 
 class Routing {
@@ -15,9 +15,9 @@ class Routing {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => RegisterEmailSection()));
         break;
-      case Routes.Home:
+      case Routes.Navigation:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
+            context, MaterialPageRoute(builder: (context) => Navigation()));
         break;
     }
   }

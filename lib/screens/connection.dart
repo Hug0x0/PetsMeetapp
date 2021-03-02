@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pets_meet/Home.dart';
+import 'package:pets_meet/screens/navigation.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -103,7 +103,7 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
           _success = true;
           _userEmail = user.email;
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Home()));
+              context, MaterialPageRoute(builder: (context) => Navigation()));
         });
       } else {
         _emailController.text = '';
