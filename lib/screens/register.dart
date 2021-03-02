@@ -67,7 +67,6 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
                       if (_formKey.currentState.validate()) {
                         hasClick = true;
                         _register();
-                        _userStore("test");
                       }
                     },
                     child: const Text('Créer un compte'),
@@ -105,14 +104,6 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
         ));
   }
 
-  Future<void> _userStore(String name) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    FirebaseAuth auth = FirebaseAuth.instance;
-    String uid = auth.currentUser.uid.toString();
-    users.add({'name': name, 'uid': uid});
-    return;
-  }
-
   void _register() async {
     if (_passwordController.text.length < 6) {
       setState(() {
@@ -125,7 +116,6 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
       password: _passwordController.text,
     ))
         .user;
-
     try {
       await user.sendEmailVerification();
     } catch (e) {
@@ -156,5 +146,13 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
         createAccountMessage = 'Une erreur est survenue, veuillez réessayer.';
       });
     }
+  }
+
+  Future<void> _userStore(String name) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser.uid.toString();
+    users.add({'name': name, 'uid': uid});
+    return;
   }
 }
