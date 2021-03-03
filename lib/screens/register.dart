@@ -75,16 +75,6 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  alignment: Alignment.center,
-                  child: RaisedButton(
-                    onPressed: () {
-                      Routing.navigateToScreen(context, Routes.Navigation);
-                    },
-                    child: const Text('Test'),
-                  ),
-                ),
-                Container(
                   alignment: Alignment.center,
                   child: hasClick == true
                       ? Text(
