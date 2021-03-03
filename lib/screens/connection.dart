@@ -128,7 +128,6 @@ class _ConnectionState extends State<Connection> {
                   Container(
                     height: 50,
                     width: double.infinity,
-                    // ignore: deprecated_member_use
                     child: FlatButton(
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
@@ -282,27 +281,19 @@ class _ConnectionState extends State<Connection> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //   return SignupPage();
-                        // }));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Register()));
                       },
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Register()));
-                        },
-                        child: Text(
-                          " S'inscrire",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                              fontSize: 18),
-                        ),
+                      child: Text(
+                        " S'inscrire",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                            fontSize: 18),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )
@@ -311,66 +302,6 @@ class _ConnectionState extends State<Connection> {
         ),
       ),
     );
-    // return Scaffold(
-    //     appBar: AppBar(
-    //       title: Text("CO"),
-    //     ),
-    //     body: Form(
-    //       key: _formKey,
-    //       child: Column(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: <Widget>[
-    //           Container(
-    //             child: const Text('Test sign in with email and password'),
-    //             padding: const EdgeInsets.all(16),
-    //             alignment: Alignment.center,
-    //           ),
-    //           TextFormField(
-    //             controller: _emailController,
-    //             decoration: const InputDecoration(labelText: 'Email'),
-    //             validator: (String value) {
-    //               if (value.isEmpty) {
-    //                 return 'Veuillez entrer votre email.';
-    //               }
-    //               return null;
-    //             },
-    //           ),
-    //           TextFormField(
-    //             controller: _passwordController,
-    //             decoration: const InputDecoration(labelText: 'Password'),
-    //             validator: (String value) {
-    //               if (value.isEmpty) {
-    //                 return 'Veuillez entrer votre mot de passe.';
-    //               }
-    //               return null;
-    //             },
-    //           ),
-    //           Container(
-    //             padding: const EdgeInsets.symmetric(vertical: 16.0),
-    //             alignment: Alignment.center,
-    //             child: RaisedButton(
-    //               child: const Text('Se connecter'),
-    //               onPressed: () async {
-    //                 if (_formKey.currentState.validate()) {
-    //                   hasClick = true;
-    //                   _signInWithEmailAndPassword();
-    //                 }
-    //               },
-    //             ),
-    //           ),
-    //           Container(
-    //             alignment: Alignment.center,
-    //             padding: const EdgeInsets.symmetric(horizontal: 20),
-    //             child: hasClick == true
-    //                 ? Text(
-    //                     createAccountMessage,
-    //                     style: TextStyle(color: Colors.red),
-    //                   )
-    //                 : Text(''),
-    //           ),
-    //         ],
-    //       ),
-    //     ));
   }
 
   void _signInWithEmailAndPassword() async {

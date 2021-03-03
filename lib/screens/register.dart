@@ -1,7 +1,8 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pets_meet/main.dart';
+import 'package:pets_meet/Home.dart';
 import 'package:pets_meet/screens/connection.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -12,9 +13,8 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _firstnameController = TextEditingController();
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -65,13 +65,13 @@ class _RegisterState extends State<Register> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        //controller: _nameController,
-                        // validator: (String value) {
-                        //   if (value.isEmpty) {
-                        //     return 'Veuillez entrer un Prénom.';
-                        //   }
-                        //   return null;
-                        // },
+                        controller: _firstnameController,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Veuillez entrer un prénom.';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                           labelText: "Prénom",
                           labelStyle: TextStyle(
@@ -93,13 +93,13 @@ class _RegisterState extends State<Register> {
                         height: 16,
                       ),
                       TextFormField(
-                        //controller: _firstnameController,
-                        // validator: (String value) {
-                        //   if (value.isEmpty) {
-                        //     return 'Veuillez entrer un Nom.';
-                        //   }
-                        //   return null;
-                        // },
+                        controller: _lastnameController,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Veuillez entrer un nom.';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                           labelText: "Nom",
                           labelStyle: TextStyle(
@@ -122,12 +122,10 @@ class _RegisterState extends State<Register> {
                       ),
                       TextFormField(
                         controller: _emailController,
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Veuillez entrer un email.';
-                          }
-                          return null;
-                        },
+                        validator: (value) =>
+                            EmailValidator.validate(_emailController.text)
+                                ? null
+                                : "Veuillez entrer un email valide.",
                         decoration: InputDecoration(
                           labelText: "Email",
                           labelStyle: TextStyle(
@@ -152,7 +150,7 @@ class _RegisterState extends State<Register> {
                         controller: _passwordController,
                         validator: (String value) {
                           if (value.isEmpty) {
-                            return 'Veuillez entrer un email.';
+                            return 'Veuillez entrer un password.';
                           }
                           return null;
                         },
@@ -219,38 +217,18 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                       ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: hasClick == true
+                            ? Text(
+                                createAccountMessage,
+                                style: TextStyle(color: Colors.red),
+                              )
+                            : Text(''),
+                      ),
                       SizedBox(
                         height: 16,
                       ),
-                      // Container(
-                      //   height: 50,
-                      //   width: double.infinity,
-                      //   child: FlatButton(
-                      //     onPressed: () {},
-                      //     color: Colors.indigo.shade50,
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(6)),
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       children: <Widget>[
-                      //         Image.asset(
-                      //           "assets/google.png",
-                      //           height: 18,
-                      //           width: 18,
-                      //         ),
-                      //         SizedBox(
-                      //           width: 10,
-                      //         ),
-                      //         Text(
-                      //           "Connect with Facebook",
-                      //           style: TextStyle(
-                      //               fontWeight: FontWeight.bold,
-                      //               color: Colors.indigo),
-                      //         )
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         height: 30,
                       ),
@@ -270,16 +248,19 @@ class _RegisterState extends State<Register> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Connection()));
                       },
                       child: Text(
-                        " S'identifier.",
+                        " S'identifier",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
                             fontSize: 18),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )
@@ -288,80 +269,6 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
-    // return Scaffold(
-    //     appBar: AppBar(
-    //       title: Text("Register"),
-    //     ),
-    //     body: Center(
-    //       child: Form(
-    //         key: _formKey,
-    //         child: Column(
-    //           //crossAxisAlignment: CrossAxisAlignment.start,
-    //           children: <Widget>[
-    //             TextFormField(
-    //               controller: _emailController,
-    //               decoration: const InputDecoration(labelText: 'Email'),
-    //               validator: (String value) {
-    //                 if (value.isEmpty) {
-    //                   return 'Veuillez entrer votre email.';
-    //                 }
-    //                 return null;
-    //               },
-    //             ),
-    //             TextFormField(
-    //               controller: _passwordController,
-    //               decoration: const InputDecoration(labelText: 'Password'),
-    //               validator: (String value) {
-    //                 if (value.isEmpty) {
-    //                   return 'Veuillez entrer votre mot de passe.';
-    //                 }
-    //                 return null;
-    //               },
-    //             ),
-    //             Container(
-    //               padding: const EdgeInsets.symmetric(vertical: 16.0),
-    //               alignment: Alignment.center,
-    //               // ignore: deprecated_member_use
-    //               child: RaisedButton(
-    //                 onPressed: () async {
-    //                   if (_formKey.currentState.validate()) {
-    //                     hasClick = true;
-    //                     _register();
-    //                   }
-    //                 },
-    //                 child: const Text('Créer un compte'),
-    //               ),
-    //             ),
-    //             Container(
-    //               alignment: Alignment.center,
-    //               child: hasClick == true
-    //                   ? Text(
-    //                       createAccountMessage,
-    //                       style: TextStyle(color: Colors.red),
-    //                     )
-    //                   : Text(''),
-    //             ),
-    //             Container(
-    //               padding: const EdgeInsets.symmetric(vertical: 16.0),
-    //               alignment: Alignment.center,
-    //               child: Row(
-    //                 children: [
-    //                   GestureDetector(
-    //                     onTap: () {
-    //                       Navigator.push(
-    //                           context,
-    //                           MaterialPageRoute(
-    //                               builder: (context) => Connection()));
-    //                     },
-    //                     child: Text('Avez vs deja un compte ?'),
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ));
   }
 
   void _register() async {
@@ -386,8 +293,6 @@ class _RegisterState extends State<Register> {
       setState(() {
         _success = true;
         _userEmail = _emailController.text;
-        _emailController.text = '';
-        _passwordController.text = '';
       });
     } else {
       setState(() {
@@ -399,7 +304,14 @@ class _RegisterState extends State<Register> {
       setState(() {
         createAccountMessage =
             'Votre compte à bien été créé, veuillez consulter votre boite mail !';
-        _userStore("test", "", "");
+        _userStore(_lastnameController.text, _firstnameController.text,
+            _emailController.text);
+        _emailController.text = '';
+        _passwordController.text = '';
+        _lastnameController.text = '';
+        _firstnameController.text = '';
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
       });
     } else {
       setState(() {
