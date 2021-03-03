@@ -8,12 +8,12 @@ class Routing {
   static void navigateToScreen(BuildContext context, Routes route) {
     switch (route) {
       case Routes.Connection:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EmailPasswordForm()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Connection()));
         break;
       case Routes.Register:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => RegisterEmailSection()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Register()));
         break;
       case Routes.Navigation:
         Navigator.push(
