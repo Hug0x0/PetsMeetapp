@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pets_meet/routes.dart';
+import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/register.dart';
 
@@ -280,10 +282,7 @@ class _ConnectionState extends State<Connection> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Register()));
+                        Routing.navigateToScreen(context, Routes.Register);
                       },
                       child: Text(
                         " S'inscrire",
@@ -322,8 +321,7 @@ class _ConnectionState extends State<Connection> {
         setState(() {
           _success = true;
           _userEmail = user.email;
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Navigation()));
+          Routing.navigateToScreen(context, Routes.Navigation);
         });
       } else {
         _emailController.text = '';

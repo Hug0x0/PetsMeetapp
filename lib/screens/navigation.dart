@@ -29,7 +29,7 @@ class Navigation extends StatefulWidget {
 
 /// This is the private State class that goes with Home.
 class _NavigationState extends State<Navigation> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   List<Widget> _widgetOptions = <Widget>[
     Maps(),
     Calendar(),
@@ -48,7 +48,7 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('Home page'),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),

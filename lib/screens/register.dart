@@ -6,6 +6,7 @@ import 'package:pets_meet/screens/connection.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/home.dart';
+import 'package:pets_meet/screens/navigation.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -250,10 +251,7 @@ class _RegisterState extends State<Register> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Connection()));
+                        Routing.navigateToScreen(context, Routes.Connection);
                       },
                       child: Text(
                         " S'identifier",
@@ -312,8 +310,7 @@ class _RegisterState extends State<Register> {
         _passwordController.text = '';
         _lastnameController.text = '';
         _firstnameController.text = '';
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
+        Routing.navigateToScreen(context, Routes.Navigation);
       });
     } else {
       setState(() {
