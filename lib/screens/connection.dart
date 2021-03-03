@@ -1,15 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pets_meet/Home.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:pets_meet/screens/register.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class EmailPasswordForm extends StatefulWidget {
+class Connection extends StatefulWidget {
   @override
-  _EmailPasswordFormState createState() => _EmailPasswordFormState();
+  _ConnectionState createState() => _ConnectionState();
 }
 
-class _EmailPasswordFormState extends State<EmailPasswordForm> {
+class _ConnectionState extends State<Connection> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -22,65 +24,284 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("CO"),
-        ),
-        body: Form(
-          key: _formKey,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.only(left: 16, right: 16),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                child: const Text('Test sign in with email and password'),
-                padding: const EdgeInsets.all(16),
-                alignment: Alignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Text(
+                    "Pet's Meet App,",
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Text(
+                    "Connectez-vous pour continuer!",
+                    style: TextStyle(fontSize: 20, color: Colors.grey.shade400),
+                  ),
+                ],
               ),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Veuillez entrer votre email.';
-                  }
-                  return null;
-                },
+              Column(
+                children: <Widget>[
+                  Form(
+                    key: _formKey,
+                    child: Column(children: <Widget>[
+                      TextFormField(
+                        controller: _emailController,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Veuillez entrer votre email.';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          labelStyle: TextStyle(
+                              fontSize: 14, color: Colors.grey.shade400),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                              )),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      TextFormField(
+                        controller: _passwordController,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Veuillez entrer votre mot de passe.';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: "Mot de passe",
+                          labelStyle: TextStyle(
+                              fontSize: 14, color: Colors.grey.shade400),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                              )),
+                        ),
+                      ),
+                    ]),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      "Mot de passe oublié ?",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    child: FlatButton(
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          hasClick = true;
+                          _signInWithEmailAndPassword();
+                        }
+                      },
+                      padding: EdgeInsets.all(0),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Color(0xff71afff),
+                              Color(0xff529cfa),
+                              Color(0xff1b7bf5),
+                            ],
+                          ),
+                        ),
+                        child: Container(
+                          alignment: Alignment.center,
+                          constraints: BoxConstraints(
+                              maxWidth: double.infinity, minHeight: 50),
+                          child: Text(
+                            "Connexion",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 70,
+                  ),
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    child: FlatButton(
+                      onPressed: () {},
+                      color: Colors.indigo.shade50,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            "assets/google.png",
+                            height: 18,
+                            width: 18,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Connectez-vous avec Google",
+                            style: TextStyle(
+                                color: Colors.indigo,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 13,
+                  ),
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    child: FlatButton(
+                      onPressed: () {},
+                      color: Colors.indigo.shade50,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            "assets/google.png",
+                            height: 18,
+                            width: 18,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Connectez-vous avec Google",
+                            style: TextStyle(
+                                color: Colors.indigo,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 13,
+                  ),
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    child: FlatButton(
+                      onPressed: () {},
+                      color: Colors.indigo.shade50,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            "assets/google.png",
+                            height: 18,
+                            width: 18,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Connectez-vous avec Google",
+                            style: TextStyle(
+                                color: Colors.indigo,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Veuillez entrer votre mot de passe.';
-                  }
-                  return null;
-                },
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                alignment: Alignment.center,
-                child: RaisedButton(
-                  child: const Text('Se connecter'),
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      hasClick = true;
-                      _signInWithEmailAndPassword();
-                    }
-                  },
+              Padding(
+                padding: EdgeInsets.only(bottom: 75),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Je suis un nouvel utilisateur.",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Register()));
+                      },
+                      child: Text(
+                        " S'inscrire",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                            fontSize: 18),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: hasClick == true
-                    ? Text(
-                        createAccountMessage,
-                        style: TextStyle(color: Colors.red),
-                      )
-                    : Text(''),
-              ),
+              )
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _signInWithEmailAndPassword() async {
