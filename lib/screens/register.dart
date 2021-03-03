@@ -2,8 +2,10 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pets_meet/Home.dart';
 import 'package:pets_meet/screens/connection.dart';
+import 'package:pets_meet/routes.dart';
+import 'package:pets_meet/routing.dart';
+import 'package:pets_meet/screens/home.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 

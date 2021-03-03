@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pets_meet/Home.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/register.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -324,7 +323,7 @@ class _ConnectionState extends State<Connection> {
           _success = true;
           _userEmail = user.email;
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Home()));
+              context, MaterialPageRoute(builder: (context) => Navigation()));
         });
       } else {
         _emailController.text = '';
