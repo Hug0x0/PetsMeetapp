@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pets_meet/screens/strollDetails.dart';
 
 final databaseReference = FirebaseFirestore.instance;
 // RECUP TT LES IDS
@@ -36,12 +37,12 @@ class Home extends StatelessWidget {
                             subtitle: Text(doc['description']),
                             onTap: () {
                               print(doc.id);
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => StrollDetails(
-                              //               strollId: doc.id,
-                              //             )));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => StrollDetails(
+                                            strollId: doc.id,
+                                          )));
                             },
                           ),
                         ))
