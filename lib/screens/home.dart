@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -13,18 +14,17 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-  String currentUser;
   final TextEditingController _creatorController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _participantsController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _hourController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool hasClick = false;
-  int stroll_id = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -101,14 +101,33 @@ class _Home extends State<Home> {
                                     return null;
                                   },
                                 ),
-                                /*  TextFormField(
-                                  controller: _dateController,
-                                  decoration:
-                                      const InputDecoration(labelText: 'Date'),
-                                  validator: (String value) {
-                                    return null;
-                                  },
-                                ),*/
+                                TextFormField(
+                                    controller: _dateController,
+                                    decoration:
+                                        InputDecoration(labelText: "Date"),
+                                    onTap: () async {
+                                      DateTime date = DateTime.now();
+
+                                      date = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime(2100));
+                                      _dateController.text =
+                                          getDate(date.toString(), date);
+                                    }),
+                                TextFormField(
+                                    controller: _hourController,
+                                    decoration:
+                                        InputDecoration(labelText: "Heure"),
+                                    onTap: () async {
+                                      var time = await showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.fromDateTime(
+                                              DateTime.now()));
+                                      _hourController.text =
+                                          time.format(context);
+                                    }),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 16.0),
@@ -117,8 +136,6 @@ class _Home extends State<Home> {
                                     child: const Text('Créer balade'),
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
-                                        // ignore: unnecessary_statements
-                                        stroll_id++;
                                         hasClick = true;
                                         if (_creatorController
                                                 .text.isNotEmpty ||
@@ -133,7 +150,8 @@ class _Home extends State<Home> {
                                               _descriptionController.text,
                                               _participantsController.text,
                                               _placeController.text,
-                                              stroll_id.toString());
+                                              _dateController.text,
+                                              _hourController.text);
                                         }
                                       }
                                     },
@@ -158,54 +176,10 @@ class _Home extends State<Home> {
             ;
           }),
     );
-    /*return Form(
-      key: _formKey,
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text(" Strolls create"),
-          ),
-          body: Container(
-            child: Form(
-              child: Column(children: <Widget>[
-                TextFormField(
-                  controller: _creatorController,
-                  decoration: const InputDecoration(labelText: 'Nom'),
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Veuillez entrer votre nom.';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(labelText: 'Description'),
-                  validator: (String value) {
-                    return null;
-                  },
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  alignment: Alignment.center,
-                  child: RaisedButton(
-                    child: const Text('Créer balade'),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        hasClick = true;
-                        createScroll(_creatorController.text,
-                            _descriptionController.text, _auth.currentUser.uid);
-                      }
-                    },
-                  ),
-                )
-              ]),
-            ),
-          )),
-    ); */
   }
 
   Future<void> createScroll(String uid, String creator, String description,
-      String participants, String place, String strollid) async {
+      String participants, String place, String date, String hour) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('strolls');
     users.add({
@@ -214,9 +188,25 @@ class _Home extends State<Home> {
       'description': description,
       'place': place,
       'participant': participants,
-      // 'date': date,
-      'stroll_id': strollid
+      'date': date,
+      'heure': hour
     });
     return;
+  }
+
+  getStrollId() {
+    CollectionReference strolls =
+        FirebaseFirestore.instance.collection('strolls');
+    return strolls.doc();
+  }
+
+  getDate(String date, DateTime selected) {
+    String date = DateFormat('dd-MM-yyyy').format(selected);
+    return date;
+  }
+
+  getHour(String hour, DateTime selected) {
+    String hour = DateFormat('kk:mm').format(selected);
+    return hour;
   }
 }
