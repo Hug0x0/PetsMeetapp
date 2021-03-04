@@ -50,7 +50,8 @@ class Home extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Text('Bug#1');
           }
-          return Text("bug#2");
+          return CircularProgressIndicator();
+          //return Text("bug#2");
         });
   }
 }
