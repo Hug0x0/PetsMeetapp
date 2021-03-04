@@ -1,1 +1,1 @@
-enum Routes { Connection, Register, Navigation }
+enum Routes { Connection, Register, Navigation, StrollDetails }

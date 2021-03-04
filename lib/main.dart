@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:pets_meet/screens/connection.dart';
 import 'package:pets_meet/screens/home.dart';
 import 'package:pets_meet/screens/register.dart';
+import 'package:pets_meet/screens/strollDetails.dart';
 import 'screens/navigation.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -11,7 +12,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(Navigation());
 }
 
 //3
