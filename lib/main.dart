@@ -12,7 +12,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(Navigation());
+  runApp(MyApp());
 }
 
 //3
