@@ -22,11 +22,7 @@ class Routing {
         break;
       case Routes.StrollDetails:
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => StrollDetails(
-                      strollId: '7korDywA4oDq2mCnl8Qn',
-                    )));
+            context, MaterialPageRoute(builder: (context) => StrollDetails()));
         break;
     }
   }
