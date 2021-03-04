@@ -58,106 +58,148 @@ class _Home extends State<Home> {
                               borderRadius: BorderRadius.circular(40),
                             ),
                             child: Form(
-                              child: Column(children: <Widget>[
-                                TextFormField(
-                                  controller: _creatorController,
-                                  decoration:
-                                      const InputDecoration(labelText: 'Nom'),
-                                  validator: (String value) {
-                                    if (value.isEmpty) {
-                                      return 'Veuillez entrer votre nom.';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                TextFormField(
-                                  controller: _descriptionController,
-                                  decoration: const InputDecoration(
-                                      labelText: 'Description'),
-                                  validator: (String value) {
-                                    return null;
-                                  },
-                                ),
-                                TextFormField(
-                                  controller: _participantsController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                      labelText: 'Nombre de participants'),
-                                  validator: (String value) {
-                                    if (value.isEmpty) {
-                                      return 'Veuillez entrer un nombre de participants';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                TextFormField(
-                                  controller: _placeController,
-                                  decoration:
-                                      const InputDecoration(labelText: 'Place'),
-                                  validator: (String value) {
-                                    if (value.isEmpty) {
-                                      return 'Veuillez entrer une ville';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                TextFormField(
-                                    controller: _dateController,
-                                    decoration:
-                                        InputDecoration(labelText: "Date"),
-                                    onTap: () async {
-                                      DateTime date = DateTime.now();
-
-                                      date = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now(),
-                                          lastDate: DateTime(2100));
-                                      _dateController.text =
-                                          getDate(date.toString(), date);
-                                    }),
-                                TextFormField(
-                                    controller: _hourController,
-                                    decoration:
-                                        InputDecoration(labelText: "Heure"),
-                                    onTap: () async {
-                                      var time = await showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.fromDateTime(
-                                              DateTime.now()));
-                                      _hourController.text =
-                                          time.format(context);
-                                    }),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 16.0),
-                                  alignment: Alignment.center,
-                                  child: RaisedButton(
-                                    child: const Text('Créer balade'),
-                                    onPressed: () async {
-                                      if (_formKey.currentState.validate()) {
-                                        hasClick = true;
-                                        if (_creatorController
-                                                .text.isNotEmpty ||
-                                            _descriptionController
-                                                .text.isNotEmpty ||
-                                            _participantsController
-                                                .text.isNotEmpty ||
-                                            _placeController.text.isNotEmpty) {
-                                          createScroll(
-                                              _auth.currentUser.uid,
-                                              _creatorController.text,
-                                              _descriptionController.text,
-                                              _participantsController.text,
-                                              _placeController.text,
-                                              _dateController.text,
-                                              _hourController.text);
-                                        }
+                              child: Container(
+                                padding: EdgeInsets.only(left: 20, right: 20),
+                                child: Column(children: <Widget>[
+                                  TextFormField(
+                                    controller: _creatorController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Nom',
+                                    ),
+                                    validator: (String value) {
+                                      if (value.isEmpty) {
+                                        return 'Veuillez entrer votre nom.';
                                       }
+                                      return null;
                                     },
                                   ),
-                                )
-                              ]),
+                                  TextFormField(
+                                    controller: _descriptionController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Description'),
+                                    validator: (String value) {
+                                      return null;
+                                    },
+                                  ),
+                                  TextFormField(
+                                    controller: _participantsController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Nombre de participants'),
+                                    validator: (String value) {
+                                      if (value.isEmpty) {
+                                        return 'Veuillez entrer un nombre de participants';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  TextFormField(
+                                    controller: _placeController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Place'),
+                                    validator: (String value) {
+                                      if (value.isEmpty) {
+                                        return 'Veuillez entrer une ville';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  TextFormField(
+                                      controller: _dateController,
+                                      decoration:
+                                          InputDecoration(labelText: "Date"),
+                                      onTap: () async {
+                                        DateTime date = DateTime.now();
+
+                                        date = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime(2100));
+                                        _dateController.text =
+                                            getDate(date.toString(), date);
+                                      }),
+                                  TextFormField(
+                                      controller: _hourController,
+                                      decoration:
+                                          InputDecoration(labelText: "Heure"),
+                                      onTap: () async {
+                                        var time = await showTimePicker(
+                                            context: context,
+                                            initialTime: TimeOfDay.fromDateTime(
+                                                DateTime.now()));
+                                        _hourController.text =
+                                            //time.format(context);
+                                            "${time.hour}:${time.minute}";
+                                      }),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16.0),
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: FlatButton(
+                                        onPressed: () async {
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            hasClick = true;
+                                            if (_creatorController
+                                                    .text.isNotEmpty ||
+                                                _descriptionController
+                                                    .text.isNotEmpty ||
+                                                _participantsController
+                                                    .text.isNotEmpty ||
+                                                _placeController
+                                                    .text.isNotEmpty) {
+                                              createScroll(
+                                                  _auth.currentUser.uid,
+                                                  _creatorController.text,
+                                                  _descriptionController.text,
+                                                  _participantsController.text,
+                                                  _placeController.text,
+                                                  _dateController.text,
+                                                  _hourController.text);
+                                            }
+                                          }
+                                        },
+                                        child: Ink(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            gradient: LinearGradient(
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                              colors: [
+                                                Color(0xff71afff),
+                                                Color(0xff529cfa),
+                                                Color(0xff1b7bf5),
+                                              ],
+                                            ),
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            constraints: BoxConstraints(
+                                                maxWidth: double.infinity,
+                                                minHeight: 50),
+                                            child: Text(
+                                              "Créer une balade",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                              ),
                             ),
                           )),
                     )),
