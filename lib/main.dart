@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Firebase Auth Demo',
-      home: Register(),
+      home: Navigation(),
     );
   }
 }
