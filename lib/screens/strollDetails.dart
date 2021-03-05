@@ -51,10 +51,6 @@ class GetNews extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
-          Timestamp timestamp = data['date'];
-          DateTime dateTime = timestamp.toDate();
-          var date = dateTime.toString().split(" ");
-          var time = date[1].split(".");
           return Scaffold(
             body: Column(
               children: [
@@ -80,7 +76,7 @@ class GetNews extends StatelessWidget {
                                     height: 50,
                                     width: 50,
                                   ),
-                                  Text(date[0]),
+                                  Text("${data['date']}"),
                                 ],
                               ),
                             ),
@@ -114,7 +110,7 @@ class GetNews extends StatelessWidget {
                                     height: 50,
                                     width: 50,
                                   ),
-                                  Text(time[0]),
+                                  Text("${data['hour']}"),
                                 ],
                               ),
                             ),
@@ -188,7 +184,6 @@ class GetNews extends StatelessWidget {
             ),
           );
         }
-
         return Text("loading");
       },
     );

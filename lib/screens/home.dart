@@ -296,9 +296,9 @@ class _Home extends State<Home> {
       'creator': creator,
       'description': description,
       'place': place,
-      'participant': participants,
+      'participants': participants,
       'date': date,
-      'heure': hour
+      'hour': hour
     });
     return;
   }
