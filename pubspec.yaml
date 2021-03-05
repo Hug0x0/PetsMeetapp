@@ -29,6 +29,10 @@ dependencies:
   cloud_firestore: ^0.16.0
   email_validator: '^1.0.5'
   intl: ^0.16.0
+  google_maps_flutter: ^2.0.1
+  map: ^0.3.0
+  cached_network_image: ^2.5.0
+  table_calendar: ^2.3.3
 
 
   # The following adds the Cupertino Icons font to your application.
