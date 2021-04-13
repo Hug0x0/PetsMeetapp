@@ -7,8 +7,10 @@ import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/home.dart';
 import 'package:pets_meet/screens/navigation.dart';
+import 'package:pets_meet/services/firebaseServices.dart';
+import '../widget/button/customButton.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseServices _auth = FirebaseServices();
 
 class Register extends StatefulWidget {
   @override
@@ -278,11 +280,11 @@ class _RegisterState extends State<Register> {
             'Entrez un mot de passe de plus de 6 caractères.';
       });
     }
-    final User user = (await _auth.createUserWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    ))
-        .user;
+    User user = (await _auth.createNewUser(
+      _emailController.text,
+      _passwordController.text,
+    ));
+
     try {
       await user.sendEmailVerification();
     } catch (e) {
@@ -299,12 +301,11 @@ class _RegisterState extends State<Register> {
         _success = false;
       });
     }
-
     if (_success) {
       setState(() {
         createAccountMessage =
             'Votre compte à bien été créé, veuillez consulter votre boite mail !';
-        _userStore(_lastnameController.text, _firstnameController.text,
+        _auth.userAddStore(_lastnameController.text, _firstnameController.text,
             _emailController.text);
         _emailController.text = '';
         _passwordController.text = '';
@@ -317,19 +318,5 @@ class _RegisterState extends State<Register> {
         createAccountMessage = 'Une erreur est survenue, veuillez réessayer.';
       });
     }
-  }
-
-  Future<void> _userStore(
-      String lastname, String firstname, String email) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    FirebaseAuth auth = FirebaseAuth.instance;
-    String uid = auth.currentUser.uid.toString();
-    users.add({
-      'firstname': firstname,
-      'lastname': lastname,
-      'email': email,
-      'uid': uid
-    });
-    return;
   }
 }

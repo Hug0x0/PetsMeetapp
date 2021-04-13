@@ -4,8 +4,9 @@ import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/register.dart';
+import 'package:pets_meet/services/firebaseServices.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseServices _auth = FirebaseServices();
 
 class Connection extends StatefulWidget {
   @override
@@ -309,11 +310,10 @@ class _ConnectionState extends State<Connection> {
             'Entrez un mot de passe de plus de 6 caractères.';
       });
     }
-    final User user = (await _auth.signInWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    ))
-        .user;
+    User user = (await _auth.connectionEmailAndPassword(
+      _emailController.text,
+      _passwordController.text,
+    ));
 
     if (user != null) {
       if (user.emailVerified) {
