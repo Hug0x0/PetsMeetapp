@@ -7,9 +7,29 @@ class FirebaseServices {
 
   Future createNewUser(String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      User user = result.user;
+      final User result = (await _auth.createUserWithEmailAndPassword(
+              email: email, password: password))
+          .user;
+      return result;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future connectionEmailAndPassword(String email, String password) async {
+    try {
+      final User result = (await _auth.signInWithEmailAndPassword(
+              email: email, password: password))
+          .user;
+      return result;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future signOut() async {
+    try {
+      await _auth.signOut();
     } catch (e) {
       print(e.toString());
     }

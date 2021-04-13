@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/connection.dart';
+import 'package:pets_meet/services/firebaseServices.dart';
+
+final FirebaseServices _auth = FirebaseServices();
 
 class Settings extends StatelessWidget {
   @override
@@ -80,6 +83,7 @@ class Settings extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 onPressed: () {
+                  _auth.signOut();
                   Routing.navigateToScreen(context, Routes.Connection);
                 },
                 child: Text("DECONNEXION",
