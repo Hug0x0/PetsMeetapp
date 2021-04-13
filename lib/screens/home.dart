@@ -48,6 +48,31 @@ class _Home extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child: AppBar(
+              bottom: TabBar(
+                tabs: [Tab(text: "Profils"), Tab(text: "Balades")],
+              ),
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              _listOfProfile(),
+              _listOfStroll(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _listOfStroll() {
     return Column(
       children: [
         Flexible(
@@ -285,6 +310,10 @@ class _Home extends State<Home> {
         ),
       ],
     );
+  }
+
+  Widget _listOfProfile() {
+    return Text('wsh');
   }
 
   Future<void> createScroll(String uid, String creator, String description,
