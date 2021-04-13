@@ -8,12 +8,12 @@ import 'package:pets_meet/screens/settings.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  static const String _title = 'Flutter Code Sample';
+  final String title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: _title,
+      title: title,
       home: Navigation(),
     );
   }
@@ -49,7 +49,7 @@ class _NavigationState extends State<Navigation> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Home page'),
+          title: Text(_widgetOptions[_selectedIndex].toString()),
         ),
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
