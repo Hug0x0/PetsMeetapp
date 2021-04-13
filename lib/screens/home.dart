@@ -48,28 +48,27 @@ class _Home extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            child: AppBar(
-              bottom: TabBar(
-                tabs: [Tab(text: "Profils"), Tab(text: "Balades")],
-              ),
+    return Scaffold(
+        body: Center(
+            child: DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: AppBar(
+            bottom: TabBar(
+              tabs: [Tab(text: "Profils"), Tab(text: "Balades")],
             ),
           ),
-          body: TabBarView(
-            children: [
-              _listOfProfile(),
-              _listOfStroll(),
-            ],
-          ),
+        ),
+        body: TabBarView(
+          children: [
+            _listOfProfile(),
+            _listOfStroll(),
+          ],
         ),
       ),
-    );
+    )));
   }
 
   Widget _listOfStroll() {
