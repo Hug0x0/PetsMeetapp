@@ -18,15 +18,25 @@ class _StrollDetailsState extends State<StrollDetails> {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-              title: Text(widget.strollId.toString()),
-              leading: IconButton(
+            title: Text(widget.strollId.toString()),
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                Routing.navigateToScreen(context, Routes.Navigation);
+              },
+            ),
+            actions: <Widget>[
+              IconButton(
                 icon: Icon(
-                  Icons.arrow_back,
+                  Icons.mode_edit,
+                  color: Colors.white,
                 ),
-                onPressed: () {
-                  Routing.navigateToScreen(context, Routes.Navigation);
-                },
-              )),
+                onPressed: () {},
+              )
+            ],
+          ),
           body: GetNews(widget.strollId.toString())),
     );
   }
