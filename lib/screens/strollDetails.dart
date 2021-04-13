@@ -40,7 +40,13 @@ class _StrollDetailsState extends State<StrollDetails> {
                   Icons.delete,
                   color: Colors.white,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  FirebaseFirestore.instance
+                      .collection("strolls")
+                      .doc(widget.strollId.toString())
+                      .delete();
+                  Routing.navigateToScreen(context, Routes.Navigation);
+                },
               )
             ],
           ),
