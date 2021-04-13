@@ -7,8 +7,11 @@ import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/home.dart';
 import 'package:pets_meet/screens/navigation.dart';
+import 'package:pets_meet/services/firebaseServices.dart';
+import '../widget/button/customButton.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+//final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseServices _auth = FirebaseServices();
 
 class Register extends StatefulWidget {
   @override
@@ -271,6 +274,54 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  // void _register() async {
+  //   if (_passwordController.text.length < 6) {
+  //     setState(() {
+  //       createAccountMessage =
+  //           'Entrez un mot de passe de plus de 6 caractères.';
+  //     });
+  //   }
+  //   final User user = (await _auth.createUserWithEmailAndPassword(
+  //     email: _emailController.text,
+  //     password: _passwordController.text,
+  //   ))
+  //       .user;
+  //   try {
+  //     await user.sendEmailVerification();
+  //   } catch (e) {
+  //     print("An error occured while trying to send email verification");
+  //     print(e.message);
+  //   }
+  //   if (user != null) {
+  //     setState(() {
+  //       _success = true;
+  //       _userEmail = _emailController.text;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _success = false;
+  //     });
+  //   }
+
+  //   if (_success) {
+  //     setState(() {
+  //       createAccountMessage =
+  //           'Votre compte à bien été créé, veuillez consulter votre boite mail !';
+  //       _userStore(_lastnameController.text, _firstnameController.text,
+  //           _emailController.text);
+  //       _emailController.text = '';
+  //       _passwordController.text = '';
+  //       _lastnameController.text = '';
+  //       _firstnameController.text = '';
+  //       Routing.navigateToScreen(context, Routes.Navigation);
+  //     });
+  //   } else {
+  //     setState(() {
+  //       createAccountMessage = 'Une erreur est survenue, veuillez réessayer.';
+  //     });
+  //   }
+  // }
+
   void _register() async {
     if (_passwordController.text.length < 6) {
       setState(() {
@@ -278,12 +329,13 @@ class _RegisterState extends State<Register> {
             'Entrez un mot de passe de plus de 6 caractères.';
       });
     }
-    final User user = (await _auth.createUserWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
+    final User user = (await _auth.createNewUser(
+      _emailController.text,
+      _passwordController.text,
     ))
         .user;
     try {
+      print("ici $user ${user.email}");
       await user.sendEmailVerification();
     } catch (e) {
       print("An error occured while trying to send email verification");
