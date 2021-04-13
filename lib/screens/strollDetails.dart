@@ -34,6 +34,13 @@ class _StrollDetailsState extends State<StrollDetails> {
                   color: Colors.white,
                 ),
                 onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+                onPressed: () {},
               )
             ],
           ),
