@@ -69,7 +69,8 @@ class _StrollDetailsState extends State<StrollDetails> {
                                 appBar: AppBar(
                                   title: Text('Mofifier une balade'),
                                 ),
-                                body: Container(
+                                body: SingleChildScrollView(
+                                    child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(40),
                                   ),
@@ -281,7 +282,7 @@ class _StrollDetailsState extends State<StrollDetails> {
                                       ]),
                                     ),
                                   ),
-                                )),
+                                ))),
                           ),
                           margin:
                               EdgeInsets.only(bottom: 50, left: 12, right: 12),
@@ -296,10 +297,6 @@ class _StrollDetailsState extends State<StrollDetails> {
                       );
                     },
                   );
-                  // FirebaseFirestore.instance
-                  //     .collection("strolls")
-                  //     .doc(widget.strollId.toString())
-                  //     .update(data);
                 },
               ),
               IconButton(
