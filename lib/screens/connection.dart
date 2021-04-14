@@ -217,9 +217,9 @@ class _ConnectionState extends State<Connection> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Image.asset(
-                            "assets/google.png",
-                            height: 18,
-                            width: 18,
+                            "assets/facebook.png",
+                            height: 25,
+                            width: 25,
                           ),
                           SizedBox(
                             width: 10,
@@ -250,7 +250,7 @@ class _ConnectionState extends State<Connection> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Image.asset(
-                            "assets/google.png",
+                            "assets/instagram.png",
                             height: 18,
                             width: 18,
                           ),
