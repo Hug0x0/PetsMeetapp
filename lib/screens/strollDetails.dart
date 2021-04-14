@@ -65,8 +65,6 @@ class _StrollDetailsState extends State<StrollDetails> {
                           ),
                           height: 600,
                           child: SizedBox.expand(
-                              child: Form(
-                            key: _formKey,
                             child: Scaffold(
                                 appBar: AppBar(
                                   title: Text('Mofifier une balade'),
@@ -76,6 +74,7 @@ class _StrollDetailsState extends State<StrollDetails> {
                                     borderRadius: BorderRadius.circular(40),
                                   ),
                                   child: Form(
+                                    key: _formKey,
                                     child: Container(
                                       padding:
                                           EdgeInsets.only(left: 20, right: 20),
@@ -83,9 +82,7 @@ class _StrollDetailsState extends State<StrollDetails> {
                                         TextFormField(
                                           controller: _modifCreatorController,
                                           decoration: const InputDecoration(
-                                              labelText: 'Name'
-                                              //hintText: 'test',
-                                              ),
+                                              labelText: 'Name'),
                                           validator: (value) {
                                             if (value.isEmpty) {
                                               return 'Veuillez entrer votre nom.';
@@ -99,6 +96,9 @@ class _StrollDetailsState extends State<StrollDetails> {
                                           decoration: const InputDecoration(
                                               labelText: 'Description'),
                                           validator: (value) {
+                                            if (value.isEmpty) {
+                                              return 'Veuillez entrer une description';
+                                            }
                                             return null;
                                           },
                                         ),
@@ -282,7 +282,7 @@ class _StrollDetailsState extends State<StrollDetails> {
                                     ),
                                   ),
                                 )),
-                          )),
+                          ),
                           margin:
                               EdgeInsets.only(bottom: 50, left: 12, right: 12),
                         ),
