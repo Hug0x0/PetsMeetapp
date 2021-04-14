@@ -23,7 +23,6 @@ class _StrollDetailsState extends State<StrollDetails> {
       TextEditingController();
   final TextEditingController _modifDateController = TextEditingController();
   final TextEditingController _modifHourController = TextEditingController();
-  //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormState>();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -167,7 +166,6 @@ class _StrollDetailsState extends State<StrollDetails> {
                                                       TimeOfDay.fromDateTime(
                                                           DateTime.now()));
                                               _modifHourController.text =
-                                                  //time.format(context);
                                                   "${time.hour}:${time.minute}";
                                             }),
                                         Container(
@@ -199,7 +197,6 @@ class _StrollDetailsState extends State<StrollDetails> {
                                                               .text,
                                                       'creator_uid':
                                                           _auth.currentUser.uid,
-                                                      //'1aZ7AKjNRfYlsRsz1YfbJghEZ7N2',
                                                       'date':
                                                           _modifDateController
                                                               .text,
@@ -218,29 +215,6 @@ class _StrollDetailsState extends State<StrollDetails> {
                                                     });
                                                   }
                                                 }
-                                                // if (_modifCreatorController.text.isNotEmpty ||
-                                                //     _modifDescriptionController
-                                                //         .text.isNotEmpty ||
-                                                //     _modifParticipantsController
-                                                //         .text.isNotEmpty ||
-                                                //     _modifPlaceController
-                                                //         .text.isNotEmpty) {
-                                                // updateStroll(
-                                                //     widget.strollId
-                                                //         .toString(),
-                                                //     _modifCreatorController
-                                                //         .text,
-                                                //     _modifDescriptionController
-                                                //         .text,
-                                                //     _modifParticipantsController
-                                                //         .text,
-                                                //     _modifPlaceController
-                                                //         .text,
-                                                //     _modifDateController
-                                                //         .text,
-                                                //     _modifHourController
-                                                //         .text);
-                                                //  }
                                               },
                                               child: Ink(
                                                 decoration: BoxDecoration(
