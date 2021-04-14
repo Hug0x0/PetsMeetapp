@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../widget/button/customButton.dart';
 
 class StrollDetails extends StatefulWidget {
   StrollDetails({Key key, this.strollId}) : super(key: key);
@@ -283,7 +284,7 @@ class _StrollDetailsState extends State<StrollDetails> {
                       .collection("strolls")
                       .doc(widget.strollId.toString())
                       .delete();
-                  Routing.navigateToScreen(context, Routes.Navigation);
+                  Navigator.pop(context);
                 },
               )
             ],
@@ -420,40 +421,8 @@ class GetNews extends StatelessWidget {
                       Container(
                         height: 50,
                         width: double.infinity,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  Color(0xff71afff),
-                                  Color(0xff529cfa),
-                                  Color(0xff1b7bf5),
-                                ],
-                              ),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              constraints: BoxConstraints(
-                                  maxWidth: double.infinity, minHeight: 50),
-                              child: Text(
-                                "Participer",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                        ),
-                      ),
+                        child: CustomButton('Participer', null),
+                      )
                     ],
                   ),
                 ),
