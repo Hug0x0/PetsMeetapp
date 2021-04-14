@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
-import 'package:pets_meet/screens/navigation.dart';
-import 'package:pets_meet/screens/register.dart';
 import 'package:pets_meet/services/firebaseServices.dart';
 
 final FirebaseServices _auth = FirebaseServices();
