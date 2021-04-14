@@ -61,6 +61,7 @@ class _Home extends State<Home> {
                       children: documents
                           .map((doc) => Card(
                                 child: ListTile(
+                                  trailing: Icon(Icons.more_vert),
                                   title: Text(doc['creator']),
                                   subtitle: Text(doc['description']),
                                   onTap: () {
@@ -102,17 +103,17 @@ class _Home extends State<Home> {
                         ),
                         height: 600,
                         child: SizedBox.expand(
-                            child: Form(
-                          key: _formKey,
                           child: Scaffold(
                               appBar: AppBar(
                                 title: Text('Créer une balade'),
                               ),
-                              body: Container(
+                              body: SingleChildScrollView(
+                                  child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(40),
                                 ),
                                 child: Form(
+                                  key: _formKey,
                                   child: Container(
                                     padding:
                                         EdgeInsets.only(left: 20, right: 20),
@@ -124,7 +125,7 @@ class _Home extends State<Home> {
                                         ),
                                         validator: (String value) {
                                           if (value.isEmpty) {
-                                            return 'Veuillez entrer votre nom.';
+                                            return 'Veuillez entrer votre nom';
                                           }
                                           return null;
                                         },
@@ -134,6 +135,9 @@ class _Home extends State<Home> {
                                         decoration: const InputDecoration(
                                             labelText: 'Description'),
                                         validator: (String value) {
+                                          if (value.isEmpty) {
+                                            return 'Veuillez entrer une description';
+                                          }
                                           return null;
                                         },
                                       ),
@@ -165,6 +169,12 @@ class _Home extends State<Home> {
                                           controller: _dateController,
                                           decoration: InputDecoration(
                                               labelText: "Date"),
+                                          validator: (String value) {
+                                            if (value.isEmpty) {
+                                              return 'Veuillez entrer une date';
+                                            }
+                                            return null;
+                                          },
                                           onTap: () async {
                                             DateTime date = DateTime.now();
 
@@ -180,6 +190,12 @@ class _Home extends State<Home> {
                                           controller: _hourController,
                                           decoration: InputDecoration(
                                               labelText: "Heure"),
+                                          validator: (String value) {
+                                            if (value.isEmpty) {
+                                              return 'Veuillez entrer une heure';
+                                            }
+                                            return null;
+                                          },
                                           onTap: () async {
                                             var time = await showTimePicker(
                                                 context: context,
@@ -187,7 +203,6 @@ class _Home extends State<Home> {
                                                     TimeOfDay.fromDateTime(
                                                         DateTime.now()));
                                             _hourController.text =
-                                                //time.format(context);
                                                 "${time.hour}:${time.minute}";
                                           }),
                                       Container(
@@ -262,8 +277,8 @@ class _Home extends State<Home> {
                                     ]),
                                   ),
                                 ),
-                              )),
-                        )),
+                              ))),
+                        ),
                         margin:
                             EdgeInsets.only(bottom: 50, left: 12, right: 12),
                       ),
