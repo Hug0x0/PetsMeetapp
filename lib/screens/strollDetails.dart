@@ -25,7 +25,7 @@ class _StrollDetailsState extends State<StrollDetails> {
                   Icons.arrow_back,
                 ),
                 onPressed: () {
-                  Routing.navigateToScreen(context, Routes.Navigation);
+                  Navigator.pop(context);
                 },
               )),
           body: GetNews(widget.strollId.toString())),
