@@ -225,7 +225,7 @@ class _ConnectionState extends State<Connection> {
                             width: 10,
                           ),
                           Text(
-                            "Connectez-vous avec Google",
+                            "Connectez-vous avec Facebook",
                             style: TextStyle(
                                 color: Colors.indigo,
                                 fontWeight: FontWeight.bold),
@@ -258,7 +258,7 @@ class _ConnectionState extends State<Connection> {
                             width: 10,
                           ),
                           Text(
-                            "Connectez-vous avec Google",
+                            "Connectez-vous avec Instagram",
                             style: TextStyle(
                                 color: Colors.indigo,
                                 fontWeight: FontWeight.bold),
