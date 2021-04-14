@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:pets_meet/screens/profileDetails.dart';
 import 'package:pets_meet/screens/strollDetails.dart';
 
 // RECUP TT LES IDS
@@ -317,7 +318,7 @@ class _Home extends State<Home> {
         Flexible(
           flex: 6,
           child: StreamBuilder<QuerySnapshot>(
-              stream: databaseReference.collection('profile').snapshots(),
+              stream: databaseReference.collection('animalProfile').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final List<DocumentSnapshot> documents = snapshot.data.docs;
@@ -326,10 +327,8 @@ class _Home extends State<Home> {
                           .map((doc) => Card(
                                 child: ListTile(
                                   leading: CircleAvatar(
-                                    child: Image.network(
-                                      doc['imageProfile'],
-                                    ),
-                                  ),
+                                      backgroundImage:
+                                          NetworkImage(doc['imageProfile'])),
                                   title: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -342,12 +341,14 @@ class _Home extends State<Home> {
                                       Text(doc['age'].toString() + " ans"),
                                   onTap: () {
                                     print(doc.id);
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => StrollDetails(
-                                    //               strollId: doc.id,
-                                    //             )));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileDetails(
+                                                  profileId: doc.id,
+                                                  name: doc['name'].toString(),
+                                                )));
                                   },
                                 ),
                               ))
