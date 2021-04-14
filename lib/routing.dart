@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pets_meet/routes.dart';
+import 'package:pets_meet/screens/forgotpassword.dart';
 import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/connection.dart';
 import 'package:pets_meet/screens/register.dart';
@@ -23,6 +24,10 @@ class Routing {
       case Routes.StrollDetails:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => StrollDetails()));
+        break;
+      case Routes.ForgotPassword:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ForgotPassword()));
         break;
     }
   }
