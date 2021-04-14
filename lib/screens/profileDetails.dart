@@ -50,6 +50,7 @@ class ProfileDetailsPage extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
+          List list = data["image"];
           return Scaffold(
             body: Column(
               children: [
@@ -125,7 +126,7 @@ class ProfileDetailsPage extends StatelessWidget {
                           bottom: TabBar(
                             tabs: [
                               Tab(text: "Description"),
-                              Tab(text: "Images")
+                              Tab(text: "Images (${list.length})")
                             ],
                           ),
                         ),
