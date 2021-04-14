@@ -116,10 +116,16 @@ class _ConnectionState extends State<Connection> {
                   ),
                   Align(
                     alignment: Alignment.topRight,
-                    child: Text(
-                      "Mot de passe oublié ?",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    child: TextButton(
+                      child: Text(
+                        "Mot de passe oublié ?",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      onPressed: () {
+                        Routing.navigateToScreen(
+                            context, Routes.ForgotPassword);
+                      },
                     ),
                   ),
                   SizedBox(
