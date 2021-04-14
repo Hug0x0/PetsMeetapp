@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pets_meet/screens/connection.dart';
-import 'package:pets_meet/screens/home.dart';
-import 'package:pets_meet/screens/register.dart';
-import 'package:pets_meet/screens/strollDetails.dart';
-import 'screens/navigation.dart';
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,13 +8,13 @@ void main() async {
   runApp(MyApp());
 }
 
-//3
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Firebase Auth Demo',
-      home: Register(),
+      home: Connection(),
     );
   }
 }

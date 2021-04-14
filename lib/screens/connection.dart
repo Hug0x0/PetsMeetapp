@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
-import 'package:pets_meet/screens/navigation.dart';
-import 'package:pets_meet/screens/register.dart';
 import 'package:pets_meet/services/firebaseServices.dart';
 
 final FirebaseServices _auth = FirebaseServices();
@@ -118,10 +116,16 @@ class _ConnectionState extends State<Connection> {
                   ),
                   Align(
                     alignment: Alignment.topRight,
-                    child: Text(
-                      "Mot de passe oublié ?",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    child: TextButton(
+                      child: Text(
+                        "Mot de passe oublié ?",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      onPressed: () {
+                        Routing.navigateToScreen(
+                            context, Routes.ForgotPassword);
+                      },
                     ),
                   ),
                   SizedBox(
@@ -219,15 +223,15 @@ class _ConnectionState extends State<Connection> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Image.asset(
-                            "assets/google.png",
-                            height: 18,
-                            width: 18,
+                            "assets/facebook.png",
+                            height: 25,
+                            width: 25,
                           ),
                           SizedBox(
                             width: 10,
                           ),
                           Text(
-                            "Connectez-vous avec Google",
+                            "Connectez-vous avec Facebook",
                             style: TextStyle(
                                 color: Colors.indigo,
                                 fontWeight: FontWeight.bold),
@@ -252,7 +256,7 @@ class _ConnectionState extends State<Connection> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Image.asset(
-                            "assets/google.png",
+                            "assets/instagram.png",
                             height: 18,
                             width: 18,
                           ),
@@ -260,7 +264,7 @@ class _ConnectionState extends State<Connection> {
                             width: 10,
                           ),
                           Text(
-                            "Connectez-vous avec Google",
+                            "Connectez-vous avec Instagram",
                             style: TextStyle(
                                 color: Colors.indigo,
                                 fontWeight: FontWeight.bold),
