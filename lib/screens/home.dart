@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:pets_meet/screens/profileDetails.dart';
 import 'package:pets_meet/screens/strollDetails.dart';
 
 // RECUP TT LES IDS
@@ -312,7 +313,54 @@ class _Home extends State<Home> {
   }
 
   Widget _listOfProfile() {
-    return Text('wsh');
+    return Column(
+      children: [
+        Flexible(
+          flex: 6,
+          child: StreamBuilder<QuerySnapshot>(
+              stream: databaseReference.collection('animalProfile').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final List<DocumentSnapshot> documents = snapshot.data.docs;
+                  return ListView(
+                      children: documents
+                          .map((doc) => Card(
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(doc['imageProfile'])),
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(doc['name']),
+                                      Text(doc['race'])
+                                    ],
+                                  ),
+                                  subtitle:
+                                      Text(doc['age'].toString() + " ans"),
+                                  onTap: () {
+                                    print(doc.id);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileDetails(
+                                                  profileId: doc.id,
+                                                  name: doc['name'].toString(),
+                                                )));
+                                  },
+                                ),
+                              ))
+                          .toList());
+                } else if (snapshot.hasError) {
+                  return Text('Bug#1');
+                }
+                return CircularProgressIndicator();
+              }),
+        ),
+      ],
+    );
   }
 
   Future<void> createScroll(String uid, String creator, String description,
