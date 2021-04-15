@@ -1,14 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pets_meet/screens/connection.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
-import 'package:pets_meet/screens/home.dart';
-import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/services/firebaseServices.dart';
-import '../widget/button/customButton.dart';
 
 final FirebaseServices _auth = FirebaseServices();
 
@@ -18,6 +13,12 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  @override
+  // ignore: must_call_super
+  void initState() {
+    _passwordVisible = false;
+  }
+
   final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -27,6 +28,7 @@ class _RegisterState extends State<Register> {
   String createAccountMessage;
   bool _success;
   String _userEmail;
+  bool _passwordVisible = true;
 
   void dispose() {
     _emailController.dispose();
@@ -152,6 +154,7 @@ class _RegisterState extends State<Register> {
                         height: 16,
                       ),
                       TextFormField(
+                        obscureText: !_passwordVisible,
                         controller: _passwordController,
                         validator: (String value) {
                           if (value.isEmpty) {
@@ -159,8 +162,23 @@ class _RegisterState extends State<Register> {
                           }
                           return null;
                         },
-                        obscureText: true,
                         decoration: InputDecoration(
+                          hasFloatingPlaceholder: true,
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.5),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
                           labelText: "Mot de passe",
                           labelStyle: TextStyle(
                               fontSize: 14,
