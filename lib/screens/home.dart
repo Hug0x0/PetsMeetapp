@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:pets_meet/routes.dart';
+import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/profileDetails.dart';
 import 'package:pets_meet/screens/strollDetails.dart';
 
@@ -259,6 +261,9 @@ class _Home extends State<Home> {
                                                       _placeController.text,
                                                       _dateController.text,
                                                       _hourController.text);
+                                                  Navigator.of(context,
+                                                          rootNavigator: true)
+                                                      .pop();
                                                 }
                                               }
                                             },
