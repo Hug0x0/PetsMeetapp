@@ -35,6 +35,14 @@ class FirebaseServices {
     }
   }
 
+  String currentUid() {
+    try {
+      return _auth.currentUser.uid;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future userAddStore(String lastname, String firstname, String email) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     String uid = _auth.currentUser.uid.toString();
