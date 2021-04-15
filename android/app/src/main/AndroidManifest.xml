@@ -9,6 +9,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="pets_meet"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCBGNRZNIRltkW2-GpXkpuH10FCZ1Ix5Tw"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
