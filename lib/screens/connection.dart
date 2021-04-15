@@ -12,6 +12,12 @@ class Connection extends StatefulWidget {
 }
 
 class _ConnectionState extends State<Connection> {
+  @override
+  // ignore: must_call_super
+  void initState() {
+    _passwordVisible = false;
+  }
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -19,6 +25,7 @@ class _ConnectionState extends State<Connection> {
   bool _success = false;
   String _userEmail;
   bool hasClick = false;
+  bool _passwordVisible = true;
 
   String createAccountMessage;
   @override
@@ -85,6 +92,7 @@ class _ConnectionState extends State<Connection> {
                         height: 16,
                       ),
                       TextFormField(
+                        obscureText: !_passwordVisible,
                         controller: _passwordController,
                         validator: (String value) {
                           if (value.isEmpty) {
@@ -93,6 +101,22 @@ class _ConnectionState extends State<Connection> {
                           return null;
                         },
                         decoration: InputDecoration(
+                          hasFloatingPlaceholder: true,
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.5),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
                           labelText: "Mot de passe",
                           labelStyle: TextStyle(
                               fontSize: 14, color: Colors.grey.shade400),
