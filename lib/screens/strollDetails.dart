@@ -214,6 +214,9 @@ class _StrollDetailsState extends State<StrollDetails> {
                                                           _modifPlaceController
                                                               .text,
                                                     });
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop();
                                                   }
                                                 }
                                               },
