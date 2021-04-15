@@ -135,6 +135,9 @@ class _ConnectionState extends State<Connection> {
                       ),
                     ]),
                   ),
+                  createAccountMessage == null
+                      ? Text("")
+                      : Text(createAccountMessage),
                   SizedBox(
                     height: 12,
                   ),
@@ -339,6 +342,7 @@ class _ConnectionState extends State<Connection> {
       });
     }
     User user = (await _auth.connectionEmailAndPassword(
+      FirebaseServices.auth,
       _emailController.text,
       _passwordController.text,
     ));

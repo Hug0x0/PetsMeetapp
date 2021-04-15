@@ -299,6 +299,7 @@ class _RegisterState extends State<Register> {
       });
     }
     User user = (await _auth.createNewUser(
+      FirebaseServices.auth,
       _emailController.text,
       _passwordController.text,
     ));

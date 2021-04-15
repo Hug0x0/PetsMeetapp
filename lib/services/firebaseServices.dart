@@ -3,11 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseServices {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future createNewUser(String email, String password) async {
+  Future<User> createNewUser(
+      FirebaseAuth auth, String email, String password) async {
     try {
-      final User result = (await _auth.createUserWithEmailAndPassword(
+      final User result = (await auth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user;
       return result;
@@ -16,9 +17,10 @@ class FirebaseServices {
     }
   }
 
-  Future connectionEmailAndPassword(String email, String password) async {
+  Future<User> connectionEmailAndPassword(
+      FirebaseAuth auth, String email, String password) async {
     try {
-      final User result = (await _auth.signInWithEmailAndPassword(
+      final User result = (await auth.signInWithEmailAndPassword(
               email: email, password: password))
           .user;
       return result;
@@ -29,7 +31,7 @@ class FirebaseServices {
 
   Future signOut() async {
     try {
-      await _auth.signOut();
+      await auth.signOut();
     } catch (e) {
       print(e.toString());
     }
@@ -37,7 +39,7 @@ class FirebaseServices {
 
   String currentUid() {
     try {
-      return _auth.currentUser.uid;
+      return auth.currentUser.uid;
     } catch (e) {
       print(e.toString());
     }
@@ -45,7 +47,7 @@ class FirebaseServices {
 
   Future userAddStore(String lastname, String firstname, String email) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-    String uid = _auth.currentUser.uid.toString();
+    String uid = auth.currentUser.uid.toString();
     users.add({
       'firstname': firstname,
       'lastname': lastname,
