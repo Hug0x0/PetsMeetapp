@@ -33,7 +33,7 @@ dependencies:
   map: ^0.3.0
   cached_network_image: ^2.5.0
   table_calendar: ^2.3.3
-  mockito: ^4.1.4
+  mockito:
 
 
   # The following adds the Cupertino Icons font to your application.
