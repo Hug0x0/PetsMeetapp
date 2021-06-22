@@ -5,6 +5,7 @@ import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/connection.dart';
 import 'package:pets_meet/screens/register.dart';
 import 'package:pets_meet/screens/strollDetails.dart';
+import 'package:pets_meet/screens/updatepassword.dart';
 
 class Routing {
   static void navigateToScreen(BuildContext context, Routes route) {
@@ -28,6 +29,10 @@ class Routing {
       case Routes.ForgotPassword:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ForgotPassword()));
+        break;
+      case Routes.UpdatePassword:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UpdatePassword()));
         break;
     }
   }
