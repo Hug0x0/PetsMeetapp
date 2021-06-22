@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pets_meet/screens/profileUserDetails.dart';
 
 class ProfileDetails extends StatefulWidget {
   ProfileDetails({Key key, this.profileId, this.name}) : super(key: key);
@@ -98,16 +99,27 @@ class ProfileDetailsPage extends StatelessWidget {
                   children: [
                     Container(
                       margin: EdgeInsets.only(right: 40, top: 20),
-                      child: Column(
-                        children: [
-                          Text("Possédé par"),
-                          CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(
-                              data['imageProfileUser'],
+                      child: GestureDetector(
+                        onTap: () {
+                          print(data['useruid']);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileUserDetails(
+                                        uid: data['useruid'],
+                                      )));
+                        },
+                        child: Column(
+                          children: [
+                            Text("Possédé par"),
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(
+                                data['imageProfileUser'],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
