@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocode/geocode.dart';
 import 'package:intl/intl.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
@@ -11,6 +12,7 @@ import 'package:pets_meet/screens/strollDetails.dart';
 // RECUP TT LES IDS
 // final strollsRef = FirebaseFirestore.instance.collection('strolls');
 final databaseReference = FirebaseFirestore.instance;
+GeoCode geoCode = GeoCode();
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -33,7 +35,8 @@ class _Home extends State<Home> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool hasClick = false;
-
+  var latitude;
+  var longitude;
 //  FUNCTION POUR AFFICHER LES IDS DE TOUTES LES BALADES
   //   @override
   // void initState() {
@@ -85,6 +88,9 @@ class _Home extends State<Home> {
                 if (snapshot.hasData) {
                   final List<DocumentSnapshot> documents = snapshot.data.docs;
                   return ListView(
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(bottom: 100),
+                      shrinkWrap: true,
                       children: documents
                           .map((doc) => Card(
                                 child: ListTile(
@@ -184,7 +190,8 @@ class _Home extends State<Home> {
                                       TextFormField(
                                         controller: _placeController,
                                         decoration: const InputDecoration(
-                                            labelText: 'Place'),
+                                            labelText:
+                                                'Place (n°, Rue, Ville, Code Postale)'),
                                         validator: (String value) {
                                           if (value.isEmpty) {
                                             return 'Veuillez entrer une ville';
@@ -240,6 +247,24 @@ class _Home extends State<Home> {
                                           margin: EdgeInsets.only(top: 20),
                                           child: FlatButton(
                                             onPressed: () async {
+                                              try {
+                                                Coordinates coordinates =
+                                                    await geoCode
+                                                        .forwardGeocoding(
+                                                            address:
+                                                                _placeController
+                                                                    .text);
+                                                latitude = coordinates.latitude;
+                                                longitude =
+                                                    coordinates.longitude;
+                                                print(
+                                                    "Latitude: ${coordinates.latitude}");
+                                                print(
+                                                    "Longitude: ${coordinates.longitude}");
+                                              } catch (e) {
+                                                print(e);
+                                              }
+
                                               if (_formKey.currentState
                                                   .validate()) {
                                                 hasClick = true;
@@ -252,20 +277,26 @@ class _Home extends State<Home> {
                                                     _placeController
                                                         .text.isNotEmpty) {
                                                   createScroll(
-                                                      _auth.currentUser.uid,
-                                                      _creatorController.text,
-                                                      _descriptionController
-                                                          .text,
-                                                      _participantsController
-                                                          .text,
-                                                      _placeController.text,
-                                                      _dateController.text,
-                                                      _hourController.text);
+                                                    _auth.currentUser.uid,
+                                                    _creatorController.text,
+                                                    _descriptionController.text,
+                                                    _participantsController
+                                                        .text,
+                                                    _placeController.text,
+                                                    _dateController.text,
+                                                    _hourController.text,
+                                                    latitude.toString(),
+                                                    longitude.toString(),
+                                                  );
                                                   Navigator.of(context,
                                                           rootNavigator: true)
                                                       .pop();
                                                 }
                                               }
+                                              print("D2BUT GEOCODE");
+                                              print(
+                                                latitude.toString(),
+                                              );
                                             },
                                             child: Ink(
                                               decoration: BoxDecoration(
@@ -383,8 +414,16 @@ class _Home extends State<Home> {
     );
   }
 
-  Future<void> createScroll(String uid, String creator, String description,
-      String participants, String place, String date, String hour) async {
+  Future<void> createScroll(
+      String uid,
+      String creator,
+      String description,
+      String participants,
+      String place,
+      String date,
+      String hour,
+      String latitude,
+      String longitude) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('strolls');
     users.add({
@@ -394,7 +433,10 @@ class _Home extends State<Home> {
       'place': place,
       'participants': participants,
       'date': date,
-      'hour': hour
+      'hour': hour,
+      'latitude': latitude,
+      'longitude': longitude
+      //'geo': [latitude, longitude]
     });
     return;
   }
