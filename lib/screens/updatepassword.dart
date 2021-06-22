@@ -17,14 +17,12 @@ class _UpdatePasswordState extends State<UpdatePassword> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  getUserId() async {
-    QuerySnapshot querySnap =
-        await FirebaseFirestore.instance.collection('users').get();
-    QueryDocumentSnapshot doc = querySnap.docs[
-        0]; // Assumption: the query returns only one document, THE doc you are looking for.
-    DocumentReference docRef = doc.reference;
-    print(docRef.toString().split("/"));
-    print(_auth.currentUser.uid.toString());
+  void _changePassword(String password) async {
+    //Create an instance of the current user.
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    User currentUser = firebaseAuth.currentUser;
+    currentUser.updatePassword(password);
+    print("yessss");
   }
 
   @override
@@ -104,6 +102,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                       .update({
                     'password': _passwordController.text,
                   });
+                  _changePassword(_passwordController.text);
                   print("password update");
                 }
               },
