@@ -48,9 +48,9 @@ class FirebaseServices {
   Future userAddStore(String lastname, String firstname, String email) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     String uid = auth.currentUser.uid.toString();
-    users.add({
-      'firstname': firstname,
-      'lastname': lastname,
+    users.doc(uid).set({
+      'firstName': firstname,
+      'lastName': lastname,
       'email': email,
       'uid': uid
     });
