@@ -6,6 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
+import 'package:pets_meet/routes.dart';
+import 'package:pets_meet/routing.dart';
 
 class AddInformation extends StatefulWidget {
   AddInformation({Key key, this.uid}) : super(key: key);
@@ -168,10 +170,11 @@ class _AddInformationState extends State<AddInformation> {
                       setState(() {
                         if (this._currentStep < this._mySteps().length - 1) {
                           this._currentStep = this._currentStep + 1;
-                          print(widget.uid);
                         } else {
+                          if (_ageController.text.isEmpty == true) {
+                            return;
+                          }
                           print("Checked continue");
-
                           DocumentReference animal = FirebaseFirestore.instance
                               .collection('animalProfile')
                               .doc(widget.uid);
@@ -215,17 +218,6 @@ class _AddInformationState extends State<AddInformation> {
                                     .doc(widget.uid)
                                     .update({"imageProfileUser": value}));
                           });
-
-                          // String imageAnimalProfile = _imageAnimalProfile.path;
-                          // storage.ref().child("uploads/$imageAnimalProfile");
-                          // ref.putFile(_imageAnimalProfile);
-                          // uploadTask.then((res) {
-                          //   res.ref.getDownloadURL().then((value) =>
-                          //       FirebaseFirestore.instance
-                          //           .collection('animalProfile')
-                          //           .doc(widget.uid)
-                          //           .update({"imageProfile": value}));
-                          // });
 
                           // Add image profil animal in animalProfile collection
                           String imageAnimalProfile = _imageAnimalProfile.path;
@@ -281,24 +273,13 @@ class _AddInformationState extends State<AddInformation> {
                                       }))
                                 });
                           }
-
-                          // FirebaseStorage storageImages = FirebaseStorage.instance;
-                          // Reference refImages =storageImages.ref().child("uploads/$_images");
-                          // refImages
-                          //     .listAll()
-                          //     .then((value) => value.items.forEach((element) {
-                          //           element.getDownloadURL().then((value) =>
-                          //               FirebaseFirestore.instance
-                          //                   .collection('users')
-                          //                   .doc(widget.uid)
-                          //                   .update({'images': value}));
-                          //         }));
+                          Future.delayed(const Duration(milliseconds: 2000),
+                              () {
+                            Routing.navigateToScreen(
+                                context, Routes.Navigation);
+                          });
                         }
                       });
-
-                      // if (_ageController.text != null) {
-                      //   Routing.navigateToScreen(context, Routes.Navigation);
-                      // }
                     },
                     onStepCancel: () {
                       setState(() {
@@ -468,7 +449,7 @@ class _AddInformationState extends State<AddInformation> {
                     ),
                   )
                 : Container(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 10),
                     child: ClipOval(
                       child: GestureDetector(
                         onTap: () {
@@ -484,7 +465,7 @@ class _AddInformationState extends State<AddInformation> {
                     ),
                   ),
             Container(
-              margin: EdgeInsets.only(top: 30),
+              margin: EdgeInsets.only(top: 10),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 3,
               child: DefaultTabController(
@@ -561,6 +542,12 @@ class _AddInformationState extends State<AddInformation> {
               ),
             ),
             TextFormField(
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Veuillez entrer votre le prénom';
+                }
+                return null;
+              },
               controller: _nameController,
               decoration: InputDecoration(
                 labelText: "Prénom",
@@ -580,6 +567,12 @@ class _AddInformationState extends State<AddInformation> {
               ),
             ),
             TextFormField(
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Veuillez entrer la raçe de votre animal';
+                }
+                return null;
+              },
               controller: _raceController,
               decoration: InputDecoration(
                 labelText: "Race",
@@ -599,6 +592,12 @@ class _AddInformationState extends State<AddInformation> {
               ),
             ),
             TextFormField(
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return "Veuillez entrer l'age";
+                }
+                return null;
+              },
               controller: _ageController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
