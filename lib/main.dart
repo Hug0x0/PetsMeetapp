@@ -5,6 +5,7 @@ import 'package:pets_meet/screens/connection.dart';
 import 'package:pets_meet/screens/home.dart';
 import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/register.dart';
+import 'package:pets_meet/screens/updatepassword.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

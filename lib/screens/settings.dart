@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/connection.dart';
+import 'package:pets_meet/screens/updatepassword.dart';
 import 'package:pets_meet/services/firebaseServices.dart';
 
 final FirebaseServices _auth = FirebaseServices();
@@ -44,7 +45,17 @@ class Settings extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            buildAccountOptionRow(context, "Changer votre mot de passe"),
+            OutlineButton(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              onPressed: () {
+                Routing.navigateToScreen(context, Routes.UpdatePassword);
+              },
+              child: Text("Changer votre mot de passe",
+                  style: TextStyle(
+                      fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
+            ),
             buildAccountOptionRow(context, "Langue"),
             buildAccountOptionRow(context, "Confidentialité et sécurité"),
             SizedBox(
