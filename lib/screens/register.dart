@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
+import 'package:pets_meet/screens/addInformation.dart';
 import 'package:pets_meet/services/firebaseServices.dart';
 
 final FirebaseServices _auth = FirebaseServices();
@@ -325,12 +326,16 @@ class _RegisterState extends State<Register> {
         createAccountMessage =
             'Votre compte à bien été créé, veuillez consulter votre boite mail !';
         _auth.userAddStore(_lastnameController.text, _firstnameController.text,
-            _emailController.text);
+            _emailController.text, _passwordController.text);
         _emailController.text = '';
         _passwordController.text = '';
         _lastnameController.text = '';
         _firstnameController.text = '';
-        Routing.navigateToScreen(context, Routes.Navigation);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    AddInformation(uid: _auth.currentUid().toString())));
       });
     } else {
       setState(() {
