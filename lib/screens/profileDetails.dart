@@ -41,6 +41,7 @@ class ProfileDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference profile =
         FirebaseFirestore.instance.collection('animalProfile');
+
     return FutureBuilder<DocumentSnapshot>(
       future: profile.doc(this.profileId).get(),
       builder:
@@ -51,32 +52,23 @@ class ProfileDetailsPage extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
+
           List list = data["image"];
           return Scaffold(
             body: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 40, right: 60, bottom: 20),
-                      child: Icon(
-                        Icons.message_outlined,
-                        color: Colors.blue,
-                        size: 40,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ClipOval(
-                      child: Image.network(
-                        data['imageProfile'],
-                        width: 130,
-                        height: 130,
-                        fit: BoxFit.cover,
+                    Container(
+                      margin: EdgeInsets.only(top: 50),
+                      child: ClipOval(
+                        child: Image.network(
+                          data['imageProfile'],
+                          width: 130,
+                          height: 130,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ],
