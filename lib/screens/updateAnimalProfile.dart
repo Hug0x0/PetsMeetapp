@@ -335,7 +335,15 @@ class _UpdateAnimalProfileState extends State<UpdateAnimalProfile> {
               ),
             );
           }
-          return CircularProgressIndicator();
+          return Padding(
+            padding: const EdgeInsets.all(40.0),
+            child: Row(
+              children: [
+                Text("Loading..."),
+                CircularProgressIndicator(),
+              ],
+            ),
+          );
         },
       ),
     );

@@ -313,7 +313,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
               ),
             );
           }
-          return CircularProgressIndicator();
+          return Padding(
+            padding: const EdgeInsets.all(40.0),
+            child: Row(
+              children: [
+                Text("Loading..."),
+                CircularProgressIndicator(),
+              ],
+            ),
+          );
         },
       ),
     );
