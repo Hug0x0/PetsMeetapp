@@ -100,32 +100,37 @@ class _Home extends State<Home> {
                               isEqualTo: _auth.currentUser.uid)
                           .snapshots(),
                       builder: (context, snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.data.size > 0) {
                           final List<DocumentSnapshot> documents =
                               snapshot.data.docs;
                           return ListView(
-                              children: documents
-                                  .map((doc) => Card(
-                                        child: ListTile(
-                                          trailing: Icon(Icons.more_vert),
-                                          title: Text(doc['creator']),
-                                          subtitle: Text(doc['description']),
-                                          onTap: () {
-                                            print(doc.id);
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        StrollDetails(
-                                                            strollId: doc.id,
-                                                            creator: doc[
-                                                                'creator_uid'])));
-                                          },
-                                        ),
-                                      ))
-                                  .toList());
-                        } else if (snapshot.hasError) {
-                          return Text('Bug#1');
+                            children: documents
+                                .map((doc) => Card(
+                                      child: ListTile(
+                                        trailing: Icon(Icons.more_vert),
+                                        title: Text(doc['creator']),
+                                        subtitle: Text(doc['description']),
+                                        onTap: () {
+                                          print(doc.id);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      StrollDetails(
+                                                          strollId: doc.id,
+                                                          creator: doc[
+                                                              'creator_uid'])));
+                                        },
+                                      ),
+                                    ))
+                                .toList(),
+                          );
+                        } else if (snapshot.data.size == 0) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                                "Vous n'avez pas créer de balade pour le moment."),
+                          );
                         }
                         return CircularProgressIndicator();
                       }),
