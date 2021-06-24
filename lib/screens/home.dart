@@ -31,7 +31,7 @@ class _Home extends State<Home> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  final User user = FirebaseAuth.instance.currentUser;
   bool hasClick = false;
 
 //  FUNCTION POUR AFFICHER LES IDS DE TOUTES LES BALADES
@@ -338,7 +338,10 @@ class _Home extends State<Home> {
         Flexible(
           flex: 6,
           child: StreamBuilder<QuerySnapshot>(
-              stream: databaseReference.collection('animalProfile').snapshots(),
+              stream: databaseReference
+                  .collection('animalProfile')
+                  .where('useruid', isNotEqualTo: user.uid)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final List<DocumentSnapshot> documents = snapshot.data.docs;
