@@ -7,9 +7,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../widget/button/customButton.dart';
 
 class StrollDetails extends StatefulWidget {
-  StrollDetails({Key key, this.strollId}) : super(key: key);
+  StrollDetails({Key key, this.strollId, this.creator}) : super(key: key);
 
   final String strollId;
+  final String creator;
 
   @override
   _StrollDetailsState createState() => _StrollDetailsState();
@@ -26,6 +27,7 @@ class _StrollDetailsState extends State<StrollDetails> {
   final TextEditingController _modifHourController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  final strolls = FirebaseFirestore.instance.collection('strolls');
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool hasClick = false;
 
@@ -44,252 +46,294 @@ class _StrollDetailsState extends State<StrollDetails> {
               },
             ),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.mode_edit,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  return showGeneralDialog(
-                    barrierLabel: "Barrier",
-                    barrierDismissible: true,
-                    barrierColor: Colors.black.withOpacity(0.5),
-                    transitionDuration: Duration(milliseconds: 700),
-                    context: context,
-                    pageBuilder: (_, __, ___) {
-                      return Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          height: 600,
-                          child: SizedBox.expand(
-                            child: Scaffold(
-                                appBar: AppBar(
-                                  title: Text('Mofifier une balade'),
+              widget.creator == _auth.currentUser.uid
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.mode_edit,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        return showGeneralDialog(
+                          barrierLabel: "Barrier",
+                          barrierDismissible: true,
+                          barrierColor: Colors.black.withOpacity(0.5),
+                          transitionDuration: Duration(milliseconds: 700),
+                          context: context,
+                          pageBuilder: (_, __, ___) {
+                            return Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
                                 ),
-                                body: SingleChildScrollView(
-                                    child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  child: Form(
-                                    key: _formKey,
-                                    child: Container(
-                                      padding:
-                                          EdgeInsets.only(left: 20, right: 20),
-                                      child: Column(children: <Widget>[
-                                        TextFormField(
-                                          controller: _modifCreatorController,
-                                          decoration: const InputDecoration(
-                                              labelText: 'Name'),
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              return 'Veuillez entrer votre nom.';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        TextFormField(
-                                          controller:
-                                              _modifDescriptionController,
-                                          decoration: const InputDecoration(
-                                              labelText: 'Description'),
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              return 'Veuillez entrer une description';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        TextFormField(
-                                          controller:
-                                              _modifParticipantsController,
-                                          keyboardType: TextInputType.number,
-                                          decoration: const InputDecoration(
-                                              labelText:
-                                                  'Nombre de participants'),
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              return 'Veuillez entrer un nombre de participants';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        TextFormField(
-                                          controller: _modifPlaceController,
-                                          decoration: const InputDecoration(
-                                              labelText: 'Place'),
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              return 'Veuillez entrer une ville';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        TextFormField(
-                                            controller: _modifDateController,
-                                            decoration: InputDecoration(
-                                                labelText: "Date"),
-                                            validator: (value) {
-                                              if (value.isEmpty) {
-                                                return 'Veuillez entrer une date';
-                                              }
-                                              return null;
-                                            },
-                                            onTap: () async {
-                                              DateTime date = DateTime.now();
-
-                                              date = await showDatePicker(
-                                                  context: context,
-                                                  initialDate: DateTime.now(),
-                                                  firstDate: DateTime.now(),
-                                                  lastDate: DateTime(2100));
-                                              _modifDateController.text =
-                                                  getDate(
-                                                      date.toString(), date);
-                                            }),
-                                        TextFormField(
-                                            controller: _modifHourController,
-                                            decoration: InputDecoration(
-                                                labelText: "Heure"),
-                                            validator: (value) {
-                                              if (value.isEmpty) {
-                                                return 'Veuillez entrer une heure';
-                                              }
-                                              return null;
-                                            },
-                                            onTap: () async {
-                                              var time = await showTimePicker(
-                                                  context: context,
-                                                  initialTime:
-                                                      TimeOfDay.fromDateTime(
-                                                          DateTime.now()));
-                                              _modifHourController.text =
-                                                  "${time.hour}:${time.minute}";
-                                            }),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 16.0),
-                                          alignment: Alignment.center,
+                                height: 600,
+                                child: SizedBox.expand(
+                                  child: Scaffold(
+                                      appBar: AppBar(
+                                        title: Text('Mofifier une balade'),
+                                      ),
+                                      body: SingleChildScrollView(
                                           child: Container(
-                                            margin: EdgeInsets.only(top: 20),
-                                            child: FlatButton(
-                                              onPressed: () async {
-                                                if (_formKey.currentState
-                                                    .validate()) {
-                                                  hasClick = true;
-                                                  if (_modifCreatorController
-                                                          .text.isNotEmpty ||
-                                                      _modifDescriptionController
-                                                          .text.isNotEmpty ||
-                                                      _modifParticipantsController
-                                                          .text.isNotEmpty ||
-                                                      _modifPlaceController
-                                                          .text.isNotEmpty) {
-                                                    FirebaseFirestore.instance
-                                                        .collection('strolls')
-                                                        .doc(widget.strollId
-                                                            .toString())
-                                                        .update({
-                                                      'creator':
-                                                          _modifCreatorController
-                                                              .text,
-                                                      'creator_uid':
-                                                          _auth.currentUser.uid,
-                                                      'date':
-                                                          _modifDateController
-                                                              .text,
-                                                      'description':
-                                                          _modifDescriptionController
-                                                              .text,
-                                                      'hour':
-                                                          _modifHourController
-                                                              .text,
-                                                      'participant':
-                                                          _modifParticipantsController
-                                                              .text,
-                                                      'place':
-                                                          _modifPlaceController
-                                                              .text,
-                                                    });
-                                                    Navigator.of(context,
-                                                            rootNavigator: true)
-                                                        .pop();
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                        ),
+                                        child: Form(
+                                          key: _formKey,
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                left: 20, right: 20),
+                                            child: Column(children: <Widget>[
+                                              TextFormField(
+                                                controller:
+                                                    _modifCreatorController,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: 'Name'),
+                                                validator: (value) {
+                                                  if (value.isEmpty) {
+                                                    return 'Veuillez entrer votre nom.';
                                                   }
-                                                }
-                                              },
-                                              child: Ink(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(6),
-                                                  gradient: LinearGradient(
-                                                    begin: Alignment.centerLeft,
-                                                    end: Alignment.centerRight,
-                                                    colors: [
-                                                      Color(0xff71afff),
-                                                      Color(0xff529cfa),
-                                                      Color(0xff1b7bf5),
-                                                    ],
-                                                  ),
-                                                ),
+                                                  return null;
+                                                },
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    _modifDescriptionController,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText:
+                                                            'Description'),
+                                                validator: (value) {
+                                                  if (value.isEmpty) {
+                                                    return 'Veuillez entrer une description';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    _modifParticipantsController,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                decoration: const InputDecoration(
+                                                    labelText:
+                                                        'Nombre de participants'),
+                                                validator: (value) {
+                                                  if (value.isEmpty) {
+                                                    return 'Veuillez entrer un nombre de participants';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    _modifPlaceController,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: 'Place'),
+                                                validator: (value) {
+                                                  if (value.isEmpty) {
+                                                    return 'Veuillez entrer une ville';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                              TextFormField(
+                                                  controller:
+                                                      _modifDateController,
+                                                  decoration: InputDecoration(
+                                                      labelText: "Date"),
+                                                  validator: (value) {
+                                                    if (value.isEmpty) {
+                                                      return 'Veuillez entrer une date';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onTap: () async {
+                                                    DateTime date =
+                                                        DateTime.now();
+
+                                                    date = await showDatePicker(
+                                                        context: context,
+                                                        initialDate:
+                                                            DateTime.now(),
+                                                        firstDate:
+                                                            DateTime.now(),
+                                                        lastDate:
+                                                            DateTime(2100));
+                                                    _modifDateController.text =
+                                                        getDate(date.toString(),
+                                                            date);
+                                                  }),
+                                              TextFormField(
+                                                  controller:
+                                                      _modifHourController,
+                                                  decoration: InputDecoration(
+                                                      labelText: "Heure"),
+                                                  validator: (value) {
+                                                    if (value.isEmpty) {
+                                                      return 'Veuillez entrer une heure';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onTap: () async {
+                                                    var time =
+                                                        await showTimePicker(
+                                                            context: context,
+                                                            initialTime: TimeOfDay
+                                                                .fromDateTime(
+                                                                    DateTime
+                                                                        .now()));
+                                                    _modifHourController.text =
+                                                        "${time.hour}:${time.minute}";
+                                                  }),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 16.0),
+                                                alignment: Alignment.center,
                                                 child: Container(
-                                                  alignment: Alignment.center,
-                                                  constraints: BoxConstraints(
-                                                      maxWidth: double.infinity,
-                                                      minHeight: 50),
-                                                  child: Text(
-                                                    "Modifier une balade",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    textAlign: TextAlign.center,
+                                                  margin:
+                                                      EdgeInsets.only(top: 20),
+                                                  child: FlatButton(
+                                                    onPressed: () async {
+                                                      if (_formKey.currentState
+                                                          .validate()) {
+                                                        hasClick = true;
+                                                        if (_modifCreatorController.text.isNotEmpty ||
+                                                            _modifDescriptionController
+                                                                .text
+                                                                .isNotEmpty ||
+                                                            _modifParticipantsController
+                                                                .text
+                                                                .isNotEmpty ||
+                                                            _modifPlaceController
+                                                                .text
+                                                                .isNotEmpty) {
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'strolls')
+                                                              .doc(widget
+                                                                  .strollId
+                                                                  .toString())
+                                                              .update({
+                                                            'creator':
+                                                                _modifCreatorController
+                                                                    .text,
+                                                            'creator_uid': _auth
+                                                                .currentUser
+                                                                .uid,
+                                                            'date':
+                                                                _modifDateController
+                                                                    .text,
+                                                            'description':
+                                                                _modifDescriptionController
+                                                                    .text,
+                                                            'hour':
+                                                                _modifHourController
+                                                                    .text,
+                                                            'participant':
+                                                                _modifParticipantsController
+                                                                    .text,
+                                                            'place':
+                                                                _modifPlaceController
+                                                                    .text,
+                                                          });
+                                                          Navigator.of(context,
+                                                                  rootNavigator:
+                                                                      true)
+                                                              .pop();
+                                                        }
+                                                      }
+                                                    },
+                                                    child: Ink(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(6),
+                                                        gradient:
+                                                            LinearGradient(
+                                                          begin: Alignment
+                                                              .centerLeft,
+                                                          end: Alignment
+                                                              .centerRight,
+                                                          colors: [
+                                                            Color(0xff71afff),
+                                                            Color(0xff529cfa),
+                                                            Color(0xff1b7bf5),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        constraints:
+                                                            BoxConstraints(
+                                                                maxWidth: double
+                                                                    .infinity,
+                                                                minHeight: 50),
+                                                        child: Text(
+                                                          "Modifier une balade",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(6),
-                                              ),
-                                            ),
+                                              )
+                                            ]),
                                           ),
-                                        )
-                                      ]),
-                                    ),
-                                  ),
-                                ))),
-                          ),
-                          margin:
-                              EdgeInsets.only(bottom: 50, left: 12, right: 12),
-                        ),
-                      );
-                    },
-                    transitionBuilder: (_, anim, __, child) {
-                      return SlideTransition(
-                        position: Tween(begin: Offset(0, 1), end: Offset(0, 0))
-                            .animate(anim),
-                        child: child,
-                      );
-                    },
-                  );
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  FirebaseFirestore.instance
-                      .collection("strolls")
-                      .doc(widget.strollId.toString())
-                      .delete();
-                  Navigator.pop(context);
-                },
-              )
+                                        ),
+                                      ))),
+                                ),
+                                margin: EdgeInsets.only(
+                                    bottom: 50, left: 12, right: 12),
+                              ),
+                            );
+                          },
+                          transitionBuilder: (_, anim, __, child) {
+                            return SlideTransition(
+                              position:
+                                  Tween(begin: Offset(0, 1), end: Offset(0, 0))
+                                      .animate(anim),
+                              child: child,
+                            );
+                          },
+                        );
+                      },
+                    )
+                  : Text(""),
+              widget.creator == _auth.currentUser.uid
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        FirebaseFirestore.instance
+                            .collection("strolls")
+                            .doc(widget.strollId.toString())
+                            .delete();
+                        Navigator.pop(context);
+                      },
+                    )
+                  : Text("")
             ],
           ),
           body: GetNews(widget.strollId.toString())),

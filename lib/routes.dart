@@ -4,5 +4,8 @@ enum Routes {
   Navigation,
   StrollDetails,
   ForgotPassword,
-  UpdatePassword
+  AddInformation,
+  UpdatePassword,
+  UpdateProfile,
+  UpdateAnimalProfile,
 }
