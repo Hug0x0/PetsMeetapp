@@ -86,7 +86,6 @@ class _Chat extends State<Chat> {
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              print("j'ai des dataaaaaaaaaas");
               final List<DocumentSnapshot> documents = snapshot.data.docs;
               return ListView(
                   children: documents
@@ -122,59 +121,65 @@ class _Chat extends State<Chat> {
           )),
       body: Stack(
         children: <Widget>[
-          Flexible(
-              flex: 3,
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('message')
-                      .where(
-                        "idMessage",
-                        isEqualTo: getMessageRef(
-                          user.uid,
-                          widget.userId,
-                        ),
-                      )
-                      .orderBy("dateString", descending: false)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      print("j'ai des dataaaaaaaaaas");
-                      final List<DocumentSnapshot> documents =
-                          snapshot.data.docs;
-                      return ListView(
-                          children: documents
-                              .map(
-                                (doc) => Container(
-                                  padding: EdgeInsets.only(
-                                      left: 14, right: 14, top: 10, bottom: 10),
-                                  child: Align(
-                                    alignment: (doc['to'] == widget.userId
-                                        ? Alignment.topLeft
-                                        : Alignment.topRight),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: (doc['to'] == widget.userId
-                                            ? Colors.grey.shade200
-                                            : Colors.blue[200]),
-                                      ),
-                                      padding: EdgeInsets.all(16),
-                                      child: Text(
-                                        doc['message'],
-                                        style: TextStyle(fontSize: 15),
+          Column(
+            children: [
+              Flexible(
+                  flex: 3,
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('message')
+                          .where(
+                            "idMessage",
+                            isEqualTo: getMessageRef(
+                              user.uid,
+                              widget.userId,
+                            ),
+                          )
+                          .orderBy("dateString", descending: false)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          print("j'ai des dataaaaaaaaaas");
+                          final List<DocumentSnapshot> documents =
+                              snapshot.data.docs;
+                          return ListView(
+                              children: documents
+                                  .map(
+                                    (doc) => Container(
+                                      padding: EdgeInsets.only(
+                                          left: 14,
+                                          right: 14,
+                                          top: 10,
+                                          bottom: 10),
+                                      child: Align(
+                                        alignment: (doc['to'] == widget.userId
+                                            ? Alignment.topLeft
+                                            : Alignment.topRight),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            color: (doc['to'] == widget.userId
+                                                ? Colors.grey.shade200
+                                                : Colors.blue[200]),
+                                          ),
+                                          padding: EdgeInsets.all(16),
+                                          child: Text(
+                                            doc['message'],
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              )
-                              .toList());
-                    } else if (snapshot.hasError) {
-                      print(snapshot.error);
-                      print(snapshot.data);
-                      return Text('Bug#1');
-                    }
-                    return CircularProgressIndicator();
-                  })),
+                                  )
+                                  .toList());
+                        } else if (snapshot.hasError) {
+                          return Text('Bug#1');
+                        }
+                        return CircularProgressIndicator();
+                      })),
+            ],
+          ),
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(

@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pets_meet/screens/chat.dart';
 
 class ProfileDetails extends StatefulWidget {
   ProfileDetails({Key key, this.profileId, this.name}) : super(key: key);
@@ -53,57 +51,23 @@ class ProfileDetailsPage extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
-          final user = FirebaseFirestore.instance
-              .collection("users")
-              .doc(data['useruid'])
-              .get();
 
-          Map<String, dynamic> userData = snapshot.data.data();
           List list = data["image"];
           return Scaffold(
             body: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 40, right: 60, bottom: 20),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.message_outlined,
-                          color: Colors.blue,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          print(data['useruid']);
-                          print(FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(data['useruid'])
-                              .get());
-
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => Chat(
-                          //         userId: data['useruid'],
-                          //         userFirstname: doc['firstName'],
-                          //         userLastname: doc['lastName'],
-                          //       ),
-                          //     ));
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ClipOval(
-                      child: Image.network(
-                        data['imageProfile'],
-                        width: 130,
-                        height: 130,
-                        fit: BoxFit.cover,
+                    Container(
+                      margin: EdgeInsets.only(top: 50),
+                      child: ClipOval(
+                        child: Image.network(
+                          data['imageProfile'],
+                          width: 130,
+                          height: 130,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ],
