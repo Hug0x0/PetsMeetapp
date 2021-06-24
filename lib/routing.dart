@@ -6,6 +6,7 @@ import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/connection.dart';
 import 'package:pets_meet/screens/register.dart';
 import 'package:pets_meet/screens/strollDetails.dart';
+import 'package:pets_meet/screens/updateProfile.dart';
 import 'package:pets_meet/screens/updatepassword.dart';
 
 class Routing {
@@ -38,6 +39,10 @@ class Routing {
       case Routes.UpdatePassword:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => UpdatePassword()));
+        break;
+      case Routes.UpdateProfile:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UpdateProfile()));
         break;
     }
   }

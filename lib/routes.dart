@@ -6,4 +6,5 @@ enum Routes {
   ForgotPassword,
   AddInformation,
   UpdatePassword,
+  UpdateProfile,
 }
