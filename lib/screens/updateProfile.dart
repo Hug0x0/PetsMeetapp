@@ -313,7 +313,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               ),
             );
           }
-          return Text("");
+          return CircularProgressIndicator();
         },
       ),
     );
@@ -338,29 +338,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
             .collection('users')
             .doc(_auth.currentUser.uid)
             .update({"imageProfile": value}));
-      });
-    });
-  }
-
-  _openOtherImages() async {
-    var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
-    this.setState(() {
-      _otherImage = picture;
-
-      String imagesUser = _otherImage.path;
-      FirebaseStorage storageOtherImages = FirebaseStorage.instance;
-      Reference refOtherImages =
-          storageOtherImages.ref().child("uploads/$imagesUser");
-      UploadTask uploadTaskUserProfile = refOtherImages.putFile(_otherImage);
-
-      uploadTaskUserProfile.then((res) {
-        res.ref.getDownloadURL().then((value) => setState(() {
-              // data['imageProfile'] = value;
-            }));
-        res.ref.getDownloadURL().then((value) => FirebaseFirestore.instance
-            .collection('users')
-            .doc(_auth.currentUser.uid)
-            .update({"images": value}));
       });
     });
   }

@@ -7,4 +7,5 @@ enum Routes {
   AddInformation,
   UpdatePassword,
   UpdateProfile,
+  UpdateAnimalProfile,
 }

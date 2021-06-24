@@ -67,6 +67,17 @@ class Settings extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
             ),
+            OutlineButton(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              onPressed: () {
+                Routing.navigateToScreen(context, Routes.UpdateAnimalProfile);
+              },
+              child: Text("Modifier mon profil animal",
+                  style: TextStyle(
+                      fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
+            ),
             buildAccountOptionRow(context, "Langue"),
             buildAccountOptionRow(context, "Confidentialité et sécurité"),
             SizedBox(
