@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pets_meet/routes.dart';
+import 'package:pets_meet/screens/addInformation.dart';
 import 'package:pets_meet/screens/forgotpassword.dart';
 import 'package:pets_meet/screens/navigation.dart';
 import 'package:pets_meet/screens/connection.dart';
 import 'package:pets_meet/screens/register.dart';
 import 'package:pets_meet/screens/strollDetails.dart';
+import 'package:pets_meet/screens/updateAnimalProfile.dart';
+import 'package:pets_meet/screens/updateProfile.dart';
+import 'package:pets_meet/screens/updatepassword.dart';
 
 class Routing {
   static void navigateToScreen(BuildContext context, Routes route) {
@@ -28,6 +32,22 @@ class Routing {
       case Routes.ForgotPassword:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ForgotPassword()));
+        break;
+      case Routes.AddInformation:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AddInformation()));
+        break;
+      case Routes.UpdatePassword:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UpdatePassword()));
+        break;
+      case Routes.UpdateProfile:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UpdateProfile()));
+        break;
+      case Routes.UpdateAnimalProfile:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => UpdateAnimalProfile()));
         break;
     }
   }

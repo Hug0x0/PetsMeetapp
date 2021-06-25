@@ -1,24 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pets_meet/screens/profileUserDetails.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProfileDetails extends StatefulWidget {
-  ProfileDetails({Key key, this.profileId, this.name}) : super(key: key);
+class ProfileUserDetails extends StatefulWidget {
+  ProfileUserDetails({Key key, this.uid}) : super(key: key);
 
-  final String profileId;
-  final String name;
+  final String uid;
 
   @override
-  _ProfileDetailsState createState() => _ProfileDetailsState();
+  _ProfileUserDetailsState createState() => _ProfileUserDetailsState();
 }
 
-class _ProfileDetailsState extends State<ProfileDetails> {
+class _ProfileUserDetailsState extends State<ProfileUserDetails> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-              title: Text(widget.name.toString()),
+              title: Text('Profil'),
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
@@ -27,23 +25,21 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   Navigator.pop(context);
                 },
               )),
-          body: ProfileDetailsPage(widget.profileId.toString())),
+          body: ProfileUserDetailsPage(widget.uid.toString())),
     );
   }
 }
 
-class ProfileDetailsPage extends StatelessWidget {
-  final String profileId;
+class ProfileUserDetailsPage extends StatelessWidget {
+  final String uid;
 
-  ProfileDetailsPage(this.profileId);
+  ProfileUserDetailsPage(this.uid);
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference profile =
-        FirebaseFirestore.instance.collection('animalProfile');
-
+    CollectionReference user = FirebaseFirestore.instance.collection('users');
     return FutureBuilder<DocumentSnapshot>(
-      future: profile.doc(this.profileId).get(),
+      future: user.doc(this.uid).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -52,17 +48,16 @@ class ProfileDetailsPage extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
-
-          List list = data["image"];
+          List listImages = data["images"];
           return Scaffold(
             body: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 50),
-                      child: ClipOval(
+                Container(
+                  margin: EdgeInsets.only(top: 80),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ClipOval(
                         child: Image.network(
                           data['imageProfile'],
                           width: 130,
@@ -70,8 +65,8 @@ class ProfileDetailsPage extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -79,45 +74,15 @@ class ProfileDetailsPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: Text(
-                        "${data['name']}",
+                        "${data['firstName']}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 40, top: 20),
-                      child: GestureDetector(
-                        onTap: () {
-                          print(data['useruid']);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProfileUserDetails(
-                                        uid: data['useruid'],
-                                      )));
-                        },
-                        child: Column(
-                          children: [
-                            Text("Possédé par"),
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundImage: NetworkImage(
-                                data['imageProfileUser'],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 Container(
-                  margin: EdgeInsets.only(top: 30),
+                  margin: EdgeInsets.only(top: 50),
                   padding: EdgeInsets.only(right: 20, left: 20),
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height / 3,
@@ -130,7 +95,7 @@ class ProfileDetailsPage extends StatelessWidget {
                           bottom: TabBar(
                             tabs: [
                               Tab(text: "Description"),
-                              Tab(text: "Images (${list.length})")
+                              Tab(text: "Images (${listImages.length})")
                             ],
                           ),
                         ),
@@ -148,7 +113,7 @@ class ProfileDetailsPage extends StatelessWidget {
             ),
           );
         }
-        return Text("loading");
+        return Text(snapshot.toString());
       },
     );
   }
@@ -163,7 +128,7 @@ Widget _description(data) {
 }
 
 Widget _image(data) {
-  List list = data["image"];
+  List list = data["images"];
   return ListView.builder(
     scrollDirection: Axis.horizontal,
     itemCount: list.length,
@@ -173,7 +138,7 @@ Widget _image(data) {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Image.network(
-          data['image'][index],
+          data['images'][index],
         ),
       );
     },

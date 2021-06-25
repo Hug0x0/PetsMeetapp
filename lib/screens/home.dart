@@ -31,7 +31,7 @@ class _Home extends State<Home> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  final User user = FirebaseAuth.instance.currentUser;
   bool hasClick = false;
   var latitude;
   var longitude;
@@ -80,281 +80,330 @@ class _Home extends State<Home> {
       children: [
         Flexible(
           flex: 6,
-          child: StreamBuilder<QuerySnapshot>(
-              stream: databaseReference.collection('strolls').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final List<DocumentSnapshot> documents = snapshot.data.docs;
-                  return ListView(
-                      scrollDirection: Axis.vertical,
-                      padding: EdgeInsets.only(bottom: 100),
-                      shrinkWrap: true,
-                      children: documents
-                          .map((doc) => Card(
-                                child: ListTile(
-                                  trailing: Icon(Icons.more_vert),
-                                  title: Text(doc['creator']),
-                                  subtitle: Text(doc['description']),
-                                  onTap: () {
-                                    print(doc.id);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => StrollDetails(
-                                                  strollId: doc.id,
-                                                )));
-                                  },
-                                ),
-                              ))
-                          .toList());
-                } else if (snapshot.hasError) {
-                  return Text('Bug#1');
-                }
-                return CircularProgressIndicator();
-              }),
-        ),
-        Flexible(
-          flex: 1,
-          child: Container(
-            margin: EdgeInsets.only(left: 300),
-            child: FloatingActionButton(
-              onPressed: () {
-                return showGeneralDialog(
-                  barrierLabel: "Barrier",
-                  barrierDismissible: true,
-                  barrierColor: Colors.black.withOpacity(0.5),
-                  transitionDuration: Duration(milliseconds: 700),
-                  context: context,
-                  pageBuilder: (_, __, ___) {
-                    return Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        height: 600,
-                        child: SizedBox.expand(
-                          child: Scaffold(
-                              appBar: AppBar(
-                                title: Text('Créer une balade'),
-                              ),
-                              body: SingleChildScrollView(
-                                  child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                child: Form(
-                                  key: _formKey,
-                                  child: Container(
-                                    padding:
-                                        EdgeInsets.only(left: 20, right: 20),
-                                    child: Column(children: <Widget>[
-                                      TextFormField(
-                                        controller: _creatorController,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Nom',
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30,
+                child: Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Text('Mes balades'),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 5,
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: databaseReference
+                          .collection('strolls')
+                          .where('creator_uid',
+                              isEqualTo: _auth.currentUser.uid)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.data.size > 0) {
+                          final List<DocumentSnapshot> documents =
+                              snapshot.data.docs;
+                          return ListView(
+                            children: documents
+                                .map((doc) => Card(
+                                      child: ListTile(
+                                        trailing: Icon(Icons.more_vert),
+                                        title: Text(doc['creator']),
+                                        subtitle: Text(doc['description']),
+                                        onTap: () {
+                                          print(doc.id);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      StrollDetails(
+                                                          strollId: doc.id,
+                                                          creator: doc[
+                                                              'creator_uid'])));
+                                        },
+                                      ),
+                                    ))
+                                .toList(),
+                          );
+                        } else if (snapshot.data.size == 0) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                                "Vous n'avez pas créer de balade pour le moment."),
+                          );
+                        }
+                        return CircularProgressIndicator();
+                      }),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+                child: Text('Les balades proposées'),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 2.5,
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream:
+                          databaseReference.collection('strolls').snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final List<DocumentSnapshot> documents =
+                              snapshot.data.docs;
+                          return ListView(
+                              children: documents
+                                  .map((doc) => Card(
+                                        child: ListTile(
+                                          trailing: Icon(Icons.more_vert),
+                                          title: Text(doc['creator']),
+                                          subtitle: Text(doc['description']),
+                                          onTap: () {
+                                            print(doc.id);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        StrollDetails(
+                                                            strollId: doc.id,
+                                                            creator: doc[
+                                                                'creator_uid'])));
+                                          },
                                         ),
+                                      ))
+                                  .toList());
+                        } else if (snapshot.hasError) {
+                          return Text('Bug#1');
+                        }
+                        return CircularProgressIndicator();
+                      }),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 10, left: 300),
+          child: FloatingActionButton(
+            onPressed: () {
+              return showGeneralDialog(
+                barrierLabel: "Barrier",
+                barrierDismissible: true,
+                barrierColor: Colors.black.withOpacity(0.5),
+                transitionDuration: Duration(milliseconds: 700),
+                context: context,
+                pageBuilder: (_, __, ___) {
+                  return Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      height: 600,
+                      child: SizedBox.expand(
+                        child: Scaffold(
+                            appBar: AppBar(
+                              title: Text('Créer une balade'),
+                            ),
+                            body: SingleChildScrollView(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: Form(
+                                key: _formKey,
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 20, right: 20),
+                                  child: Column(children: <Widget>[
+                                    TextFormField(
+                                      controller: _creatorController,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Nom',
+                                      ),
+                                      validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return 'Veuillez entrer votre nom';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      controller: _descriptionController,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Description'),
+                                      validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return 'Veuillez entrer une description';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      controller: _participantsController,
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Nombre de participants'),
+                                      validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return 'Veuillez entrer un nombre de participants';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      controller: _placeController,
+                                      decoration: const InputDecoration(
+                                          labelText:
+                                              'Place (n°, Rue, Ville, Code Postale)'),
+                                      validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return 'Veuillez entrer une heure';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                        controller: _dateController,
+                                        decoration:
+                                            InputDecoration(labelText: "Date"),
                                         validator: (String value) {
                                           if (value.isEmpty) {
-                                            return 'Veuillez entrer votre nom';
+                                            return 'Veuillez entrer une date';
                                           }
                                           return null;
                                         },
-                                      ),
-                                      TextFormField(
-                                        controller: _descriptionController,
-                                        decoration: const InputDecoration(
-                                            labelText: 'Description'),
-                                        validator: (String value) {
-                                          if (value.isEmpty) {
-                                            return 'Veuillez entrer une description';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      TextFormField(
-                                        controller: _participantsController,
-                                        keyboardType: TextInputType.number,
-                                        decoration: const InputDecoration(
-                                            labelText:
-                                                'Nombre de participants'),
-                                        validator: (String value) {
-                                          if (value.isEmpty) {
-                                            return 'Veuillez entrer un nombre de participants';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      TextFormField(
-                                        controller: _placeController,
-                                        decoration: const InputDecoration(
-                                            labelText:
-                                                'Place (n°, Rue, Ville, Code Postale)'),
-                                        validator: (String value) {
-                                          if (value.isEmpty) {
-                                            return 'Veuillez entrer une ville';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      TextFormField(
-                                          controller: _dateController,
-                                          decoration: InputDecoration(
-                                              labelText: "Date"),
-                                          validator: (String value) {
-                                            if (value.isEmpty) {
-                                              return 'Veuillez entrer une date';
-                                            }
-                                            return null;
-                                          },
-                                          onTap: () async {
-                                            DateTime date = DateTime.now();
+                                        onTap: () async {
+                                          DateTime date = DateTime.now();
 
-                                            date = await showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime.now(),
-                                                lastDate: DateTime(2100));
-                                            _dateController.text =
-                                                getDate(date.toString(), date);
-                                          }),
-                                      TextFormField(
-                                          controller: _hourController,
-                                          decoration: InputDecoration(
-                                              labelText: "Heure"),
-                                          validator: (String value) {
-                                            if (value.isEmpty) {
-                                              return 'Veuillez entrer une heure';
-                                            }
-                                            return null;
-                                          },
-                                          onTap: () async {
-                                            var time = await showTimePicker(
-                                                context: context,
-                                                initialTime:
-                                                    TimeOfDay.fromDateTime(
-                                                        DateTime.now()));
-                                            _hourController.text =
-                                                "${time.hour}:${time.minute}";
-                                          }),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 16.0),
-                                        alignment: Alignment.center,
-                                        child: Container(
-                                          margin: EdgeInsets.only(top: 20),
-                                          child: FlatButton(
-                                            onPressed: () async {
-                                              try {
-                                                Coordinates coordinates =
-                                                    await geoCode
-                                                        .forwardGeocoding(
-                                                            address:
-                                                                _placeController
-                                                                    .text);
-                                                latitude = coordinates.latitude;
-                                                longitude =
-                                                    coordinates.longitude;
-                                                print(
-                                                    "Latitude: ${coordinates.latitude}");
-                                                print(
-                                                    "Longitude: ${coordinates.longitude}");
-                                              } catch (e) {
-                                                print(e);
-                                              }
+                                          date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now(),
+                                              lastDate: DateTime(2100));
+                                          _dateController.text =
+                                              getDate(date.toString(), date);
+                                        }),
+                                    TextFormField(
+                                        controller: _hourController,
+                                        decoration:
+                                            InputDecoration(labelText: "Heure"),
+                                        validator: (String value) {
+                                          if (value.isEmpty) {
+                                            return 'Veuillez entrer une heure';
+                                          }
+                                          return null;
+                                        },
+                                        onTap: () async {
+                                          var time = await showTimePicker(
+                                              context: context,
+                                              initialTime:
+                                                  TimeOfDay.fromDateTime(
+                                                      DateTime.now()));
+                                          _hourController.text =
+                                              "${time.hour}:${time.minute}";
+                                        }),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16.0),
+                                      alignment: Alignment.center,
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 20),
+                                        child: FlatButton(
+                                          onPressed: () async {
+                                            try {
+                                              Coordinates coordinates =
+                                                  await geoCode
+                                                      .forwardGeocoding(
+                                                          address:
+                                                              _placeController
+                                                                  .text);
+                                              latitude = coordinates.latitude;
+                                              longitude = coordinates.longitude;
+                                            } catch (e) {}
 
-                                              if (_formKey.currentState
-                                                  .validate()) {
-                                                hasClick = true;
-                                                if (_creatorController
-                                                        .text.isNotEmpty ||
-                                                    _descriptionController
-                                                        .text.isNotEmpty ||
-                                                    _participantsController
-                                                        .text.isNotEmpty ||
-                                                    _placeController
-                                                        .text.isNotEmpty) {
-                                                  createScroll(
-                                                    _auth.currentUser.uid,
-                                                    _creatorController.text,
-                                                    _descriptionController.text,
-                                                    _participantsController
-                                                        .text,
-                                                    _placeController.text,
-                                                    _dateController.text,
-                                                    _hourController.text,
-                                                    latitude.toString(),
-                                                    longitude.toString(),
-                                                  );
-                                                  Navigator.of(context,
-                                                          rootNavigator: true)
-                                                      .pop();
-                                                }
+                                            if (_formKey.currentState
+                                                .validate()) {
+                                              hasClick = true;
+                                              if (_creatorController
+                                                      .text.isNotEmpty ||
+                                                  _descriptionController
+                                                      .text.isNotEmpty ||
+                                                  _participantsController
+                                                      .text.isNotEmpty ||
+                                                  _placeController
+                                                      .text.isNotEmpty) {
+                                                createScroll(
+                                                  _auth.currentUser.uid,
+                                                  _creatorController.text,
+                                                  _descriptionController.text,
+                                                  _participantsController.text,
+                                                  _placeController.text,
+                                                  _dateController.text,
+                                                  _hourController.text,
+                                                  latitude.toString(),
+                                                  longitude.toString(),
+                                                );
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop();
                                               }
-                                              print("D2BUT GEOCODE");
-                                              print(
-                                                latitude.toString(),
-                                              );
-                                            },
-                                            child: Ink(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(6),
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,
-                                                  colors: [
-                                                    Color(0xff71afff),
-                                                    Color(0xff529cfa),
-                                                    Color(0xff1b7bf5),
-                                                  ],
-                                                ),
-                                              ),
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                constraints: BoxConstraints(
-                                                    maxWidth: double.infinity,
-                                                    minHeight: 50),
-                                                child: Text(
-                                                  "Créer une balade",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                            shape: RoundedRectangleBorder(
+                                            }
+                                          },
+                                          child: Ink(
+                                            decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(6),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                colors: [
+                                                  Color(0xff71afff),
+                                                  Color(0xff529cfa),
+                                                  Color(0xff1b7bf5),
+                                                ],
+                                              ),
+                                            ),
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              constraints: BoxConstraints(
+                                                  maxWidth: double.infinity,
+                                                  minHeight: 50),
+                                              child: Text(
+                                                "Créer une balade",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                textAlign: TextAlign.center,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      )
-                                    ]),
-                                  ),
+                                      ),
+                                    ),
+                                  ]),
                                 ),
-                              ))),
-                        ),
-                        margin:
-                            EdgeInsets.only(bottom: 50, left: 12, right: 12),
+                              ),
+                            ))),
                       ),
-                    );
-                  },
-                  transitionBuilder: (_, anim, __, child) {
-                    return SlideTransition(
-                      position: Tween(begin: Offset(0, 1), end: Offset(0, 0))
-                          .animate(anim),
-                      child: child,
-                    );
-                  },
-                );
-              },
-              child: Icon(Icons.add),
-              backgroundColor: Colors.blue,
-            ),
+                      margin: EdgeInsets.only(bottom: 50, left: 12, right: 12),
+                    ),
+                  );
+                },
+                transitionBuilder: (_, anim, __, child) {
+                  return SlideTransition(
+                    position: Tween(begin: Offset(0, 1), end: Offset(0, 0))
+                        .animate(anim),
+                    child: child,
+                  );
+                },
+              );
+            },
+            child: Icon(Icons.add),
+            backgroundColor: Colors.blue,
           ),
         ),
       ],
@@ -367,7 +416,10 @@ class _Home extends State<Home> {
         Flexible(
           flex: 6,
           child: StreamBuilder<QuerySnapshot>(
-              stream: databaseReference.collection('animalProfile').snapshots(),
+              stream: databaseReference
+                  .collection('animalProfile')
+                  .where('useruid', isNotEqualTo: user.uid)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final List<DocumentSnapshot> documents = snapshot.data.docs;
@@ -434,8 +486,13 @@ class _Home extends State<Home> {
       'hour': hour,
       'latitude': latitude,
       'longitude': longitude
-      //'geo': [latitude, longitude]
     });
+    _creatorController.clear();
+    _descriptionController.clear();
+    _participantsController.clear();
+    _placeController.clear();
+    _dateController.clear();
+    _hourController.clear();
     return;
   }
 
