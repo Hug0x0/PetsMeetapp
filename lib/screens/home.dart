@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocode/geocode.dart';
 import 'package:intl/intl.dart';
-import 'package:pets_meet/routes.dart';
-import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/profileDetails.dart';
 import 'package:pets_meet/screens/strollDetails.dart';
 
