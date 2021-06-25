@@ -2,15 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocode/geocode.dart';
 import 'package:intl/intl.dart';
-import 'package:pets_meet/routes.dart';
-import 'package:pets_meet/routing.dart';
 import 'package:pets_meet/screens/profileDetails.dart';
 import 'package:pets_meet/screens/strollDetails.dart';
 
 // RECUP TT LES IDS
 // final strollsRef = FirebaseFirestore.instance.collection('strolls');
 final databaseReference = FirebaseFirestore.instance;
+GeoCode geoCode = GeoCode();
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -33,7 +33,8 @@ class _Home extends State<Home> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final User user = FirebaseAuth.instance.currentUser;
   bool hasClick = false;
-
+  var latitude;
+  var longitude;
 //  FUNCTION POUR AFFICHER LES IDS DE TOUTES LES BALADES
   //   @override
   // void initState() {
@@ -254,10 +255,11 @@ class _Home extends State<Home> {
                                     TextFormField(
                                       controller: _placeController,
                                       decoration: const InputDecoration(
-                                          labelText: 'Place'),
+                                          labelText:
+                                              'Place (n°, Rue, Ville, Code Postale)'),
                                       validator: (String value) {
                                         if (value.isEmpty) {
-                                          return 'Veuillez entrer une ville';
+                                          return 'Veuillez entrer une heure';
                                         }
                                         return null;
                                       },
@@ -310,6 +312,17 @@ class _Home extends State<Home> {
                                         margin: EdgeInsets.only(top: 20),
                                         child: FlatButton(
                                           onPressed: () async {
+                                            try {
+                                              Coordinates coordinates =
+                                                  await geoCode
+                                                      .forwardGeocoding(
+                                                          address:
+                                                              _placeController
+                                                                  .text);
+                                              latitude = coordinates.latitude;
+                                              longitude = coordinates.longitude;
+                                            } catch (e) {}
+
                                             if (_formKey.currentState
                                                 .validate()) {
                                               hasClick = true;
@@ -322,14 +335,16 @@ class _Home extends State<Home> {
                                                   _placeController
                                                       .text.isNotEmpty) {
                                                 createScroll(
-                                                    _auth.currentUser.uid,
-                                                    _creatorController.text,
-                                                    _descriptionController.text,
-                                                    _participantsController
-                                                        .text,
-                                                    _placeController.text,
-                                                    _dateController.text,
-                                                    _hourController.text);
+                                                  _auth.currentUser.uid,
+                                                  _creatorController.text,
+                                                  _descriptionController.text,
+                                                  _participantsController.text,
+                                                  _placeController.text,
+                                                  _dateController.text,
+                                                  _hourController.text,
+                                                  latitude.toString(),
+                                                  longitude.toString(),
+                                                );
                                                 Navigator.of(context,
                                                         rootNavigator: true)
                                                     .pop();
@@ -366,13 +381,9 @@ class _Home extends State<Home> {
                                               ),
                                             ),
                                           ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                          ),
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ]),
                                 ),
                               ),
@@ -453,8 +464,16 @@ class _Home extends State<Home> {
     );
   }
 
-  Future<void> createScroll(String uid, String creator, String description,
-      String participants, String place, String date, String hour) async {
+  Future<void> createScroll(
+      String uid,
+      String creator,
+      String description,
+      String participants,
+      String place,
+      String date,
+      String hour,
+      String latitude,
+      String longitude) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('strolls');
     users.add({
@@ -464,8 +483,16 @@ class _Home extends State<Home> {
       'place': place,
       'participants': participants,
       'date': date,
-      'hour': hour
+      'hour': hour,
+      'latitude': latitude,
+      'longitude': longitude
     });
+    _creatorController.clear();
+    _descriptionController.clear();
+    _participantsController.clear();
+    _placeController.clear();
+    _dateController.clear();
+    _hourController.clear();
     return;
   }
 
