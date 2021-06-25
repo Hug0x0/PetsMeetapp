@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Firebase Auth Demo',
-      home: Register(),
+      home: Connection(),
     );
   }
 }
