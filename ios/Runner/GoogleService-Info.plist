@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>180020434259-sd6m63f96kn6e5sj7kc2jhkrlj3v6sd7.apps.googleusercontent.com</string>
+	<string>788642844611-vctkjs7dji32olj55k5ch6fva71nvmfn.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.180020434259-sd6m63f96kn6e5sj7kc2jhkrlj3v6sd7</string>
+	<string>com.googleusercontent.apps.788642844611-vctkjs7dji32olj55k5ch6fva71nvmfn</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBjl1o56CzaGDiEwWK6SnHYox4B4pgt9JQ</string>
+	<string>AIzaSyDGLnkDgQsS1jNG3wjFJFYQ7zWotvt2_B0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>180020434259</string>
+	<string>788642844611</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.petsMeet</string>
 	<key>PROJECT_ID</key>
-	<string>pet-s-meet</string>
+	<string>pet-s-meet2</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pet-s-meet.appspot.com</string>
+	<string>pet-s-meet2.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:180020434259:ios:7ceef85aa187954615fda6</string>
-	<key>DATABASE_URL</key>
-	<string>https://pet-s-meet.firebaseio.com</string>
+	<string>1:788642844611:ios:d24d0d915cf00104b77776</string>
 </dict>
 </plist>
