@@ -119,6 +119,9 @@ class _Home extends State<Home> {
                                                   builder: (context) =>
                                                       StrollDetails(
                                                           strollId: doc.id,
+                                                          lat: doc['latidute'],
+                                                          long:
+                                                              doc['longitude'],
                                                           creator: doc[
                                                               'creator_uid'])));
                                         },

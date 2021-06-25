@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pets_meet/routes.dart';
 import 'package:pets_meet/routing.dart';
@@ -7,10 +8,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../widget/button/customButton.dart';
 
 class StrollDetails extends StatefulWidget {
-  StrollDetails({Key key, this.strollId, this.creator}) : super(key: key);
+  StrollDetails({Key key, this.strollId, this.creator, this.lat, this.long})
+      : super(key: key);
 
   final String strollId;
   final String creator;
+  final String lat;
+  final String long;
 
   @override
   _StrollDetailsState createState() => _StrollDetailsState();
@@ -36,7 +40,7 @@ class _StrollDetailsState extends State<StrollDetails> {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-            title: Text(widget.strollId.toString()),
+            title: Text("Details de la balade"),
             leading: IconButton(
               icon: Icon(
                 Icons.arrow_back,
@@ -336,7 +340,8 @@ class _StrollDetailsState extends State<StrollDetails> {
                   : Text("")
             ],
           ),
-          body: GetNews(widget.strollId.toString())),
+          body: GetNews(widget.strollId.toString(), widget.lat.toString(),
+              widget.long.toString())),
     );
   }
 
@@ -357,17 +362,27 @@ class _StrollDetailsState extends State<StrollDetails> {
   }
 }
 
-class GetNews extends StatelessWidget {
+class GetNews extends StatefulWidget {
   final String strollId;
+  final String lat;
+  final String long;
 
-  GetNews(this.strollId);
+  GetNews(this.strollId, this.lat, this.long);
+
+  @override
+  _GetNewsState createState() => _GetNewsState();
+}
+
+class _GetNewsState extends State<GetNews> {
+  GoogleMapController myControllers;
+  Set<Marker> _markers = {};
 
   @override
   Widget build(BuildContext context) {
     CollectionReference strolls =
         FirebaseFirestore.instance.collection('strolls');
     return FutureBuilder<DocumentSnapshot>(
-      future: strolls.doc(this.strollId).get(),
+      future: strolls.doc(this.widget.strollId).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -376,12 +391,38 @@ class GetNews extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
+
           return Scaffold(
             body: Column(
               children: [
                 Container(
                   height: 250,
-                  decoration: BoxDecoration(color: Colors.grey),
+                  child: GoogleMap(
+                    markers: _markers,
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                        double.parse(data['latitude']),
+                        double.parse(data['longitude']),
+                      ),
+                      zoom: 14,
+                    ),
+                    onMapCreated: (GoogleMapController controller) {
+                      myControllers = controller;
+                      // addMarker(LatLng(double.parse(data['latitude']),
+                      //     double.parse(data['longitude'])));
+                      _markers.add(Marker(
+                        icon: BitmapDescriptor.defaultMarker,
+                        markerId: MarkerId('test'),
+                        position: LatLng(
+                          double.parse(data['latitude']),
+                          double.parse(data['longitude']),
+                        ),
+                        infoWindow: InfoWindow(title: "Balade ici!"),
+                      ));
+                      print(_markers);
+                    },
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 50),
